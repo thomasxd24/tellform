@@ -159,6 +159,10 @@ var FormSchema = new Schema({
 	},
 
 	design: {
+		backgroundImage:{
+			type:String,
+			default:""
+		},
 		colors:{
 			backgroundColor: {
 				type: String,

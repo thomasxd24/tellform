@@ -8,6 +8,7 @@ angular.module('view-form').controller('SubmitFormController', [
 
 		$(".loader").fadeOut("slow");
 		document.body.style.background = myForm.design.colors.backgroundColor;
+		//TODO add background image
         $translate.use(myForm.language);
 	}
 ]);
