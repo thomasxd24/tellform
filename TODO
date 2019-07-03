@@ -10,3 +10,4 @@
 7. Uses values of the form to fill in labels
 8. Add currency options field at form editor
 9. don't display next questions until arrived. (This has to do with logic jumps)
+10. add image for multiple choices
