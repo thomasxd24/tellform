@@ -1,0 +1,13 @@
+1. Add background image in forms
+- Submit-form.client.controller.js:10 is the place to look
+- Need to change mongoose model (form.server.model.js) ~ design.backgroundImage
+- Need to add option in settings (admin-form.client.view.html:127)
+2. make multiple logic jumps
+3. add GET query fillable
+4. (pretty much close to 3.) make variables on the form, it must be addable on the form editor
+5. make POST request once the form is submitted.
+6. think of how to handle spaces on GET queries
+7. Uses values of the form to fill in labels
+8. Add currency options field at form editor
+9. don't display next questions until arrived. (This has to do with logic jumps)
+10. add image for multiple choices
