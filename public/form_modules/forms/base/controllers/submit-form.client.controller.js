@@ -3,11 +3,12 @@
 // SubmitForm controller
 angular.module('view-form').controller('SubmitFormController', [
 	'$scope', '$rootScope', '$state', '$translate', 'myForm',
-	function($scope, $rootScope, $state, $translate, myForm) {
+	function ($scope, $rootScope, $state, $translate, myForm) {
 		$scope.myform = myForm;
 
 		$(".loader").fadeOut("slow");
 		document.body.style.background = myForm.design.colors.backgroundColor;
-        $translate.use(myForm.language);
+		document.body.style.backgroundImage = "url('" + myForm.design.colors.backgroundImage + "')";
+		$translate.use(myForm.language);
 	}
 ]);

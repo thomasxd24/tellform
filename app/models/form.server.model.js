@@ -160,6 +160,10 @@ var FormSchema = new Schema({
 
 	design: {
 		colors:{
+			backgroundImage: {
+				type: String,
+				default: ''
+			},
 			backgroundColor: {
 				type: String,
 				match: [/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/],
