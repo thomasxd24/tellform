@@ -6,7 +6,7 @@ angular.module('view-form').config(['$stateProvider',
 		// Forms state routing
 		$stateProvider.
 		state('submitForm', {
-			url: '/forms/:formId',
+			url: '/forms/:formId', // refer to https://github.com/angular-ui/ui-router/wiki/URL-Routing#query-parameters for url query
 			templateUrl: '/static/form_modules/forms/base/views/submit-form.client.view.html',
 			resolve: {
 				Forms: 'Forms',
@@ -35,3 +35,7 @@ angular.module('view-form').config(['$stateProvider',
 	    });
     }
 ]);
+
+angular.module('view-form').config(['$locationProvider', function($locationProvider){
+    $locationProvider.html5Mode(true);    
+}]);
