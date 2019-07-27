@@ -23,6 +23,10 @@ var FieldOptionSchema = new Schema({
 	option_value: {
 		type: String,
 		trim: true
+	},
+	option_image:
+	{
+		type: String
 	}
 });
 

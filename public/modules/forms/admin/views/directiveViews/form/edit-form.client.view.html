@@ -321,7 +321,7 @@
 						<div class="col-md-8 col-xs-12">
 							<div ng-repeat="option in field.fieldOptions track by option.option_id" class="row">
 								<input type="text" name="{{option.option_value}}{{field._id}}" ng-model="option.option_value" class="col-xs-5">
-
+								<input type="text" name="{{option.option_image}}{{field._id}}" ng-model="option.option_image" class="col-xs-5">
 								<a class="btn btn-danger btn-mini right" type="button" ng-click="deleteOption(option)" class="col-xs-3">
 									<i class="fa fa-trash-o"></i>
 								</a>

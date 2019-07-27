@@ -55,18 +55,16 @@
 		<div class="col-sm-4">
 			<div class="row field">
 				<div class="field-title col-sm-12">
-					<h5>{{ 'GA_TRACKING_CODE' | translate }}</h5>
+					<h5>Webhook URL</h5>
 				</div>
 
 				<div class="col-sm-12">
 					<input class="form-control"
 						   type="text"
-						   ng-model="myform.analytics.gaCode"
-						   value="{{myform.analytics.gaCode}}"
+						   ng-model="myform.webhook_url"
+						   value="{{myform.webhook_url}}"
 						   style="width: 100%;"
-						   ng-minlength="4"
-						   placeholder="UA-XXXXX-Y"
-						   ng-pattern="/\bUA-\d{4,10}-\d{1,4}\b/">
+						   placeholder="http://xxx.com/xxx">
 				</div>
 			</div>
 			<div class="row field">

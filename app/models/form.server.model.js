@@ -100,7 +100,11 @@ var FormSchema = new Schema({
 		},
 		visitors: [VisitorDataSchema]
 	},
-
+	webhook_url:
+	{
+		type: String,
+		default: ''
+	},
 	form_fields: [FieldSchema],
 	submissions: [{
 		type: Schema.Types.ObjectId,

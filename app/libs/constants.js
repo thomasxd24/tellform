@@ -21,7 +21,7 @@ module.exports = {
 				'yes_no',
 				'natural',
 				'stripe',
-				'number'],
+				'number',],
 
     ratingShapeTypes: ['Heart',
 						'Star',
