@@ -102,6 +102,11 @@ function BaseFieldSchema(){
 			type: Boolean,
 			default: false
 		},
+		showOnJump: {
+			type: Boolean,
+			default: false
+		},
+
 		validFieldTypes: {
 			type: [String]
 		},

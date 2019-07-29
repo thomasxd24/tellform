@@ -6,13 +6,13 @@ angular.module('view-form').config(['$stateProvider',
 		// Forms state routing
 		$stateProvider.
 		state('submitForm', {
-			url: '/forms/:formId', // refer to https://github.com/angular-ui/ui-router/wiki/URL-Routing#query-parameters for url query
+			url: '/forms/:formId',
 			templateUrl: '/static/form_modules/forms/base/views/submit-form.client.view.html',
 			resolve: {
 				Forms: 'Forms',
 				myForm: function (Forms, $q, $state, $stateParams) {
                     var deferred = $q.defer();
-
+					//TODO try to inject variable here
                     Forms.get({formId: $stateParams.formId}).$promise.then(function(data) {
                     	deferred.resolve(data);
 				    },  function(reason) {
@@ -35,7 +35,3 @@ angular.module('view-form').config(['$stateProvider',
 	    });
     }
 ]);
-
-angular.module('view-form').config(['$locationProvider', function($locationProvider){
-    $locationProvider.html5Mode(true);    
-}]);

@@ -26,7 +26,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 				//Don't start timer if we are looking at a design preview
                 if($scope.ispreview){
                     TimeCounter.restartClock();
-                }
+				}
+				
 
 				var form_fields_count = $scope.myform.visible_form_fields.filter(function(field){
 		            return field.fieldType !== 'statement';
@@ -41,11 +42,11 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
                 $scope.reloadForm = function(){
                     //Reset Form
-                    $scope.myform.submitted = false;
+					$scope.myform.submitted = false;
                     $scope.myform.form_fields = _.chain($scope.myform.visible_form_fields).map(function(field){
                             field.fieldValue = '';
                             return field;
-                        }).value();
+						}).value();;
 
 					$scope.loading = false;
                     $scope.error = '';
@@ -142,10 +143,21 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					return false;
 				};
 
-                $scope.setActiveField = $rootScope.setActiveField = function(field_id, field_index, animateScroll) {
+                $scope.setActiveField = $rootScope.setActiveField = function(field_id, field_index, animateScroll,fromJump) {
                     if($scope.selected === null || (!field_id && field_index === null) )  {
                     	return;
-                    }
+					}
+					if(fromJump)
+					{
+						for(var i=0; i < $scope.myform.original_form_fields.length; i++){
+							var currField = $scope.myform.original_form_fields[i];
+							if(currField['_id'] == field_id){
+						$scope.myform.form_fields.push(currField);
+								break;
+							}
+						}
+						
+					}
 	    			
 	    			if(!field_id){
 	    				field_id = $scope.myform.visible_form_fields[field_index]._id;
@@ -160,7 +172,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 							}
 						}
 					}
-
+					
 					if($scope.selected._id === field_id){
 						return;
 		    		}
@@ -263,13 +275,14 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					if($scope.selected && $scope.selected.index > -1){
 
 						if($scope.selected._id !== FORM_ACTION_ID){
-							var currField = $scope.myform.visible_form_fields[$scope.selected.index];
+							var currField = $scope.myform.form_fields[$scope.selected.index];
 						
 							//Jump to logicJump's destination if it is true
+							console.log($scope.myform.form_fields)
 							if(currField.logicJump && currField.logicJump.jumpTo && evaluateLogicJump(currField)){
-								$scope.setActiveField(currField.logicJump.jumpTo, null, true);
+								$scope.setActiveField(currField.logicJump.jumpTo, null, true,true);
 							} else if($scope.selected.index < $scope.myform.visible_form_fields.length-1){
-								$scope.setActiveField(null, $scope.selected.index+1, true);
+								$scope.setActiveField(null, $scope.selected.index+1, true,false);
 							} else {
 								$scope.setActiveField(FORM_ACTION_ID, null, true);
 							}

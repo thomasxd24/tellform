@@ -62,17 +62,20 @@ exports.createSubmission = function(req, res) {
 		geoLocation: req.body.geoLocation,
 		device: req.body.device
 	});
+	if(res.webhook_url)
+	{
+		Form.findById(req.body._id,'webhook_url', { lean: true },function (err, res) {
+			let url = res.webhook_url;
+			request.post(res.webhook_url).form({
+				form: req.body._id,
+				form_fields: req.body.form_fields
+			});
+			//TODO chanege this when introduce varaiable
+			// webhook
+		
+			});
+	}
 
-	Form.findById(req.body._id,'webhook_url', { lean: true },function (err, res) {
-	let url = res.webhook_url;
-	request.post(res.webhook_url).form({
-		form: req.body._id,
-		form_fields: req.body.form_fields
-	});
-	//TODO chanege this when introduce varaiable
-	// webhook
-
-	});
 	
 
 	submission.save(function(err, submission){
