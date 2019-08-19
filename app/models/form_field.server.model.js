@@ -85,7 +85,7 @@ function BaseFieldSchema(){
 			default: ''
 		},
 
-		logicJump: LogicJumpSchema,
+		logicJump: [LogicJumpSchema],
 
 		ratingOptions: RatingFieldSchema,
 		fieldOptions: [FieldOptionSchema],

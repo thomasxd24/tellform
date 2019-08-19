@@ -6,7 +6,7 @@ angular.module('view-form').config(['$stateProvider',
 		// Forms state routing
 		$stateProvider.
 		state('submitForm', {
-			url: '/forms/:formId',
+			url: '/forms/:formId?q1&q2&q3&q4&q5&q6&q7&q8&q9&q10',
 			templateUrl: '/static/form_modules/forms/base/views/submit-form.client.view.html',
 			resolve: {
 				Forms: 'Forms',
@@ -14,11 +14,16 @@ angular.module('view-form').config(['$stateProvider',
                     var deferred = $q.defer();
 					//TODO try to inject variable here
                     Forms.get({formId: $stateParams.formId}).$promise.then(function(data) {
+						// data = {
+						// 	...$stateParams,
+						// 	...data
+						// };
+						// console.log(data)
                     	deferred.resolve(data);
 				    },  function(reason) {
                         $state.go('unauthorizedFormAccess');
                         deferred.reject({redirectTo: 'unauthorizedFormAccess'});
-                    });
+					});
 				    return deferred.promise;
 				}
 			},

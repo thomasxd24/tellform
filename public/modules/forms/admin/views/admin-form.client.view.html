@@ -106,11 +106,34 @@
 												<button class="btn btn btn-secondary view-form-btn" ngclipboard data-clipboard-target="#copyEmbedded">
 													{{ 'COPY' | translate }} <i class="fa fa-clipboard" aria-hidden="true"></i>
 												</button>
-											</div>
+											</div><uib-tab index="0" heading="{{ 'CREATE_TAB' | translate }}" select="deactivateDesignTab()">
+												<edit-form-directive myform="myform"></edit-form-directive>
+											</uib-tab>
 										</div>
 									</uib-tab>
 								</uib-tabset>
 							</div>
+						</div>
+					</div>
+				</uib-tab>
+				<uib-tab index="5" heading="{{ 'CREATE_TAB' | translate }}">
+						<div class="col-md-8 col-xs-12">
+								<button ng-click="addVar()" class="btn">
+								Ajouter
+							</button>
+						</div>
+					<div class="row" ng-repeat="variable in myform.variable track by $index">
+							<div class="field-input col-sm-6">
+									<input class="form-control" type="text"
+										   ng-model="variable" value="{{variable}}"/>
+								</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-offset-4 col-sm-2">
+							<button class="btn btn-signup btn-rounded" type="button" ng-click="updateDesign(false, myform, false, false)"><i class="icon-arrow-left icon-white"></i>{{ 'SAVE_CHANGES' | translate }}</button>
+						</div>
+						<div class="col-sm-1">
+							<button class="btn btn-secondary btn-rounded" type="button" ng-click="resetForm()"><i class="icon-eye-open icon-white"></i>{{ 'CANCEL' | translate }}</button>
 						</div>
 					</div>
 				</uib-tab>
@@ -153,6 +176,7 @@
 								</div>
 
 								<div class="row field">
+									
 									<div class="field-title col-sm-5">
 										<h5>{{ 'ANSWER_TEXT_COLOR' | translate }}</h5>
 									</div>

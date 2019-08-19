@@ -134,6 +134,7 @@ var FormSchema = new Schema({
         },
 		buttons:[ButtonSchema]
 	},
+	variable:[String],
 	endPage: {
 		showEnd:{
 			type: Boolean,
@@ -273,12 +274,12 @@ FormSchema.virtual('analytics.fields').get(function () {
 			var totalViews = dropoffViews+continueViews;
 			var continueRate = 0;
 			var dropoffRate = 0;
-			
+
 			if(totalViews > 0){
 				continueRate = (continueViews/totalViews*100).toFixed(0);
 				dropoffRate = (dropoffViews/totalViews*100).toFixed(0);
 			}
-			
+
 			fieldDropoffs[i] = {
 				dropoffViews: dropoffViews,
 				responses: continueViews,

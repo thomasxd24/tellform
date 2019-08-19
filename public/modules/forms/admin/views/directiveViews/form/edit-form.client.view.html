@@ -391,24 +391,19 @@
 					<div class="row">
 						<div class="col-md-4 col-xs-12 field-input">{{ 'LOGIC_JUMP' | translate }}</div>
 						<div class="col-md-8 col-xs-12 field-input">
-							<label class="switch-light switch-holo" onclick="">
-								<input type="checkbox" ng-model="field.logicJump.enabled">
-								<span>
-									<span> {{ 'OFF' | translate }}</span>
-									<span> {{ 'ON' | translate }}</span>
-									<a></a>
-								</span>
-							</label>
+							<button ng-click="addJump()" class="btn">
+							Ajouter
+						</button>
 						</div>
 					</div>
-					<div class="row question" ng-if="field.logicJump.enabled"">
+					<div class="row question" ng-repeat="jump in field.logicJump">
 						<div class="col-md-4 col-sm-12">
 
 							<b> {{ 'IF_THIS_FIELD' | translate }} </b>
 						</div>
 						<div class="col-md-4 col-sm-12">
-							<select style="width:100%" ng-model="field.logicJump.expressionString"
-									value="{{field.logicJump.expressionString}}"
+							<select style="width:100%" ng-model="jump.expressionString"
+									value="{{jump.expressionString}}"
 									name="logicjump_expressionString{{field._id}}">
 								<option value="field == static">
 
@@ -463,22 +458,24 @@
 							</select>
 						</div>
 						<div class="col-md-4 col-sm-12">
-							<input type="text" ng-model="field.logicJump.valueB"/>
+							<input type="text" ng-model="jump.valueB"/>
 						</div>
 						<div class="col-md-2">
 
 							<b>{{ 'THEN_JUMP_TO' | translate }}</b>
 						</div>
 						<div class="col-md-10">
-							<select style="width:100%" ng-model="field.logicJump.jumpTo"
-									value="{{field.logicJump.jumpTo}}"
+							<select style="width:70%" ng-model="jump.jumpTo"
+									value="{{jump.jumpTo}}"
 									name="logicjump_jumpTo{{field._id}}">
 								<option ng-repeat="jump_field in myform.form_fields"
 										value="{{jump_field._id}}">
 									{{jump_field.title}}
 								</option>
 							</select>
+							<button ng-click="deleteJump($index,field)">Enlever</button>
 						</div>
+						
 					</div>
 					<div class="modal-footer row">
 						<button type="submit" ng-click="saveField()" class="btn btn-signup btn-rounded">

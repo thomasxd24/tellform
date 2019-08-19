@@ -117,7 +117,14 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
             $scope.update(updateImmediately, data, shouldDiff, refreshAfterUpdate, function(){
                 refreshFrame();
             });
-        }
+		}
+
+		$scope.addVar = function () {
+			$scope.myform.variable.push(
+				"");
+				console.log($scope.myform.variable)
+
+		};
 
         // Update existing Form
         $scope.update = $rootScope.update = function(updateImmediately, data, shouldDiff, refreshAfterUpdate, cb){
