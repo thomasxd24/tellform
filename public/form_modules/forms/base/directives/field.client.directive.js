@@ -78,12 +78,14 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 							'Access-Control-Allow-Origin': '*'
 						}
 					};
+					scope.loadingText = "Chargement..."
 
 					// SEND THE FILES.
 					$http(request)
 						.success(function (d) {
 							var currField = scope.field;
 							currField.fieldValue = d
+							scope.loadingText = ""
 						})
 						.error(function () {
 						});
