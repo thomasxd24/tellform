@@ -52,7 +52,7 @@ exports.getPlate = async function (req,res) {
 
 		// Creates a client
 		const client = new vision.ImageAnnotatorClient();
-
+		console.log(path.resolve(__dirname)+"/../../"+req.files['image'][0].path)
 		// Performs label detection on the image file
 		const [result] = await client.textDetection(path.resolve(__dirname)+"/../../"+req.files['image'][0].path);
 		var text = result.textAnnotations[0].description
