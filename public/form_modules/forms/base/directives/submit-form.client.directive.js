@@ -27,7 +27,25 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 				if ($scope.ispreview) {
 					TimeCounter.restartClock();
 				}
-				console.log(window.location.href.split('?')[1])
+				if(window.location.href.split('?')[1])
+				{
+					var values = window.location.href.split('?')[1].split('&').map((value) => {return {[value.split("=")[0]]:value.split("=")[1]}})
+					var vari = {}
+					values.forEach(element => {
+						vari = {
+							...vari,
+							...element
+						}
+					});
+					$scope.myform.variables.forEach(element =>
+						{
+							var value = vari[element.name]?vari[element.name]:"";
+							element.value = value;
+						})
+						console.log($scope.myform.variables)
+
+				}
+
 
 
 				var form_fields_count = $scope.myform.visible_form_fields.filter(function (field) {
@@ -43,6 +61,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				$scope.reloadForm = function () {
 					//Reset Form
+					console.log("hi")
 					$scope.myform.submitted = false;
 					$scope.myform.form_fields = _.chain($scope.myform.visible_form_fields).map(function (field) {
 						field.fieldValue = '';
@@ -65,6 +84,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
                 /*
                 ** Field Controls
                 */
+
+
 				var evaluateLogicJump = function (field, jump) {
 					var logicJump = jump;
 					console.log(window.location.href)
@@ -274,7 +295,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					if ($scope.selected && $scope.selected.index > -1) {
 
 						if ($scope.selected._id !== FORM_ACTION_ID) {
-							
+
 							var currField = $scope.myform.form_fields[$scope.selected.index];
 							let logicJumped = false;
 							for (let index = 0; index < currField.logicJump.length; index++) {
@@ -321,6 +342,9 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
                 /*
                 ** Form Display Functions
                 */
+
+
+
 				$scope.exitStartPage = function () {
 					$scope.myform.startPage.showStart = false;
 					if ($scope.myform.visible_form_fields.length > 0) {
@@ -378,6 +402,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 					var form = _.cloneDeep($scope.myform);
 
+
 					var deviceData = getDeviceData();
 					form.device = deviceData;
 
@@ -412,6 +437,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						delete form.form_fields[i].fieldType;
 
 					}
+					console.log(form)
 
 					setTimeout(function () {
 						$scope.submitPromise = $http.post('/forms/' + $scope.myform._id, form)

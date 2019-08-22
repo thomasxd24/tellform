@@ -122,10 +122,10 @@
 								Ajouter
 							</button>
 						</div>
-					<div class="row" ng-repeat="variable in myform.variable track by $index">
+					<div class="row" ng-repeat="variable in myform.variables track by $index">
 							<div class="field-input col-sm-6">
 									<input class="form-control" type="text"
-										   ng-model="variable" value="{{variable}}"/>
+										   ng-model="variable.name"/>
 								</div>
 					</div>
 					<div class="row">

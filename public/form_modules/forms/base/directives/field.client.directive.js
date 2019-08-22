@@ -23,6 +23,7 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 				'password',
 				'radio',
 				'legal',
+				'plate',
 				'statement',
 				'rating',
 				'yes_no',
@@ -65,6 +66,29 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
                 scope.nextField = $rootScope.nextField;
 				scope.setActiveField = $rootScope.setActiveField;
 
+				scope.uploadFile = function (item) {
+					var form = document.getElementById('the-form');
+					var formData = new FormData(form);
+					var request = {
+						method: 'POST',
+						url: '/plate',
+						data: formData,
+						headers: {
+							'Content-Type': undefined,
+							'Access-Control-Allow-Origin': '*'
+						}
+					};
+
+					// SEND THE FILES.
+					$http(request)
+						.success(function (d) {
+							var currField = scope.field;
+							currField.fieldValue = d
+						})
+						.error(function () {
+						});
+				}
+
 				//Set format only if field is a date
 				if(scope.field.fieldType === 'date'){
 					scope.dateOptions = {
@@ -81,6 +105,9 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 				if(scope.field.fieldType === 'number' || scope.field.fieldType === 'textfield' || scope.field.fieldType === 'email' || scope.field.fieldType === 'link'){
 					switch(scope.field.fieldType){
 						case 'textfield':
+							scope.input_type = 'text';
+							break;
+						case 'plate':
 							scope.input_type = 'text';
 							break;
 						case 'email':

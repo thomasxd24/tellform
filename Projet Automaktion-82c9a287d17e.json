@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "projet-automaktion",
+  "private_key_id": "82c9a287d17eeb5f11f059c83c997405405ea5f9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDQy6iOQI9VpbDV\nrYQXcEwBm2NyfuHog2yvdHtJ6VOO1r6R/abFVzjQjMI5wNnoI0lEvttaWHczCNJE\nF1Fu2D4kAd+Ss44uY35wdwLjgQQswI3B2+KHxD9Wz2ux4XXf+pG9OuKwcva84OL9\nodaNB0uBPABwEl7I/R77dwIAwOUwRn01W/iRCFtx1C3W49eBuXM18MUMVxRP6IWa\naWDRPTRPsNFGAU2f5sgC97d74QWFukMT/DHKhAxwbTuJ/Ei7oJ81wSq35h/Z2Cr8\nbKBoDbeB8jkBzXZtllhh1MZt7Ae8oKB+5tzgxG/fEzHdUfaOEq8lfxHnN2h6leeO\nrqmkvvplAgMBAAECggEABk2WRksTzfkCma9ositxQ/LSAaTBGEY6u6DiJZT4sTJx\njicwh7sOa5n1irhJa70ASyYRfvdLi+Zw2zOIAWG08zHSSGkJZQRFuXVCSKYTqe/b\nJ6vGDtABaH26VCRIrRew8BviYti+8uyStaeTJO6Vhy54RenWuNhj/SE2gIQnjGQ6\nZx1WfV6L5WphQk1yB+6K007ndRzBaRJIhUU8zALt4bDaSKwVfKxKQk0ewmhInaS6\nNx29EE4AprzOtoyBAN73sw1LYIfHn1JBaB/S5gVvplUPXydKaPafIWbArxoaZlRn\n78DxssMIeRY7OxlvJokq/KYRldBkmwTKTtoRprOOYQKBgQDnfnwNdYMwE04hsdQs\nr1G5FzW3shAgzfBQ/5UVD6Art/RAbIw4D0M8MUiMoUMlKSIRHzSJSQcka7eU+HDS\n1m4AIhJawzxIa+VIgSLMDukVsdTIKvFWZmH8HZZ3ViIfeBVBdSTQ3F+oTq31AhyM\nHQ7GxOqZ+RJfssY3KenTe9tURQKBgQDm5gp3LIJzOLRDM24a5SL5NZflvpMvLoxq\nyxqXs4ttjKzbs7kaxbWd1iR6nM2DSr9QDOAMOMIxaLS6zikUhOXx5hqQyjC6cUDe\n1LbwpvQLDY/azxM3264cO+QQw6TVwxC5EQqMKFuE1Xo7+7K5tiAqyAZyfT0D8Ifd\nNgpVM+o/oQKBgQDNnBFQ3vv7Wlo+ITVjzwAWFqBWnSgoCuIU/z0J7MwFqKigBAly\nzVOZheh7R8xcmDEy5fWCrkNSvP3cqeGD0oL3SUvmI5xKctK+WDxw5BlwdHeaplGe\nvObwx9LaAb3jF4RBlGtzuxiXY/KsOAjlBfYW49W/lnMUXrQhUO/nMA45xQKBgBD7\nUkG5kE6RGRDoM2ze9VeGzYkkHwcVUVZ5YZdOqS6BbiUqbq69Y8IcAcrSxXqmgLOO\nftvnQMEJhmFG0Fal/5Nu7P1BIZxUwASjeGDypng5ox7go/UzvvZsoTVqbjEai5xQ\n2Im+XhzC5p6KwHZQIsWCuJarB1XG1vc6BkCF9PCBAoGBANs/KW4LD9mFnROcD4Ep\nqMwUlp7nqcuxzz8kKJByPkVcPTMvC+ubx57hjNjHpHIxEB6VDgZFGVsjPo7Gfc+1\ngdDMTMDQDyAJdZvDHYgFQ9M399Ua2aerZtT4LPcFXMio45KTVcTGVg0Hl5OqleKh\nQ6s4GKLWz9OZlWbXDKcYmEHP\n-----END PRIVATE KEY-----\n",
+  "client_email": "license-plate-recognize@projet-automaktion.iam.gserviceaccount.com",
+  "client_id": "117068241112321367754",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/license-plate-recognize%40projet-automaktion.iam.gserviceaccount.com"
+}

@@ -3,6 +3,18 @@
 /**
  * Module dependencies.
  */
+var multer  = require('multer')
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  cb(null, 'uploads/')
+	},
+	filename: function (req, file, cb) {
+	  cb(null, file.fieldname + '-' + Date.now()+'.jpg')
+	}
+  })
+
+  var upload = multer({ storage: storage })
+
 var forms = require('../../app/controllers/forms.server.controller'),
 	auth = require('../../config/passport_helpers'),
 	config = require('../../config/config'),
@@ -31,8 +43,11 @@ module.exports = function(app) {
 	}
 
    	app.route('/forms/:formIdFast([a-zA-Z0-9]+)')
-        .post(forms.createSubmission)
-	
+		.post(forms.createSubmission)
+		var cpUpload = upload.fields([{ name: 'image', maxCount: 1 }])
+		app.route('/plate')
+        .post(cpUpload,forms.getPlate)
+
 	app.route('/forms')
 		.get(auth.isAuthenticatedOrApiKey, forms.list)
 		.post(auth.isAuthenticatedOrApiKey, forms.create);
@@ -46,6 +61,8 @@ module.exports = function(app) {
 	app.route('/forms/:formId([a-zA-Z0-9]+)/submissions')
 		.get(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.listSubmissions)
 		.delete(auth.isAuthenticatedOrApiKey, forms.hasAuthorization, forms.deleteSubmissions);
+
+
 
 	// Slower formId middleware
 	app.param('formId', forms.formByID);

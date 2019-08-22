@@ -25,6 +25,7 @@
     "init": "node scripts/setup.js"
   },
   "dependencies": {
+    "@google-cloud/vision": "^1.2.0",
     "async": "^1.4.2",
     "body-parser": "^1.19.0",
     "bower": "^1.8.8",
@@ -59,6 +60,7 @@
     "mkdirp": "^0.5.1",
     "mongoose": "~4.4.19",
     "morgan": "^1.9.1",
+    "multer": "^1.4.2",
     "nodemailer": "~4.0.0",
     "passport": "~0.3.0",
     "passport-anonymous": "^1.0.1",

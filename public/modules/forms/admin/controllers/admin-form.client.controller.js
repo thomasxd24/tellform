@@ -118,12 +118,12 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                 refreshFrame();
             });
 		}
-
+		$scope.variables = []
 		$scope.addVar = function () {
-			$scope.myform.variable.push(
-				"");
-				console.log($scope.myform.variable)
-
+			$scope.myform.variables.push(
+				{id:$scope.variables.length,
+				name:""});
+				console.log($scope.myform.variables)
 		};
 
         // Update existing Form

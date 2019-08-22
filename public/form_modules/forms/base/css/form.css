@@ -491,6 +491,22 @@ section.public-form .btn {
     background-color: rgb(256,256,256);
     background-color: rgba(256,256,256,0.8);
 }
+
+.upload-btn-wrapper {
+	position: relative;
+	overflow: hidden;
+	display: inline-block;
+  }
+  
+  
+  .upload-btn-wrapper input[type=file] {
+	font-size: 100px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+  }
+
 .field-directive {
     z-index: 9;
     padding: 10% 10% 10% 0;

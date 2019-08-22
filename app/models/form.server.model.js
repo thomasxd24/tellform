@@ -79,6 +79,19 @@ var formSchemaOptions = {
 	}
 };
 
+var variableSchema = new Schema(
+	{
+		id:
+		{
+			type: Number
+		},
+		name:
+		{
+			type:String
+		}
+	}
+)
+
 /**
  * Form Schema
  */
@@ -134,7 +147,7 @@ var FormSchema = new Schema({
         },
 		buttons:[ButtonSchema]
 	},
-	variable:[String],
+	variables:[variableSchema],
 	endPage: {
 		showEnd:{
 			type: Boolean,

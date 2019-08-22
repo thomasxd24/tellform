@@ -6,6 +6,7 @@ module.exports = {
 				'email',
 				'link',
 				'legal',
+				'plate',
 				'url',
 				'textarea',
 				'statement',

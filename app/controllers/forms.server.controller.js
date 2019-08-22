@@ -3,6 +3,9 @@
 /**
  * Module dependencies.
  */
+
+var path = require('path');
+
 var mongoose = require('mongoose'),
 	errorHandler = require('./errors.server.controller'),
 	Form = mongoose.model('Form'),
@@ -16,41 +19,54 @@ var mongoose = require('mongoose'),
  * Delete a forms submissions
  */
 exports.deleteSubmissions = function(req, res) {
-
 	var submission_id_list = req.body.deleted_submissions,
 		form = req.form;
 
-	FormSubmission.remove({ form: req.form, _id: {$in: submission_id_list} }, function(err){
-
-		if(err){
-			res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-			return;
-		}
-
-		form.analytics.visitors = [];
-		form.save(function(formSaveErr){
-			if(formSaveErr){
+	FormSubmission.remove(
+		{ form: req.form, _id: { $in: submission_id_list } },
+		function(err) {
+			if (err) {
 				res.status(400).send({
-					message: errorHandler.getErrorMessage(formSaveErr)
+					message: errorHandler.getErrorMessage(err)
 				});
 				return;
 			}
-			res.status(200).send('Form submissions successfully deleted');
 
-		});
-	});
+			form.analytics.visitors = [];
+			form.save(function(formSaveErr) {
+				if (formSaveErr) {
+					res.status(400).send({
+						message: errorHandler.getErrorMessage(formSaveErr)
+					});
+					return;
+				}
+				res.status(200).send('Form submissions successfully deleted');
+			});
+		}
+	);
 };
+
+exports.getPlate = async function (req,res) {
+		// Imports the Google Cloud client library
+		const vision = require('@google-cloud/vision');
+
+		// Creates a client
+		const client = new vision.ImageAnnotatorClient();
+
+		// Performs label detection on the image file
+		const [result] = await client.textDetection(path.resolve(__dirname)+"/../../"+req.files['image'][0].path);
+		var text = result.textAnnotations[0].description
+		res.send(text.match(/([A-Z]|[0-9]){2}-([A-Z]|[0-9]){3}-([A-Z]|[0-9]){2}/)[0])
+
+}
 
 /**
  * Submit a form entry
  */
 exports.createSubmission = function(req, res) {
-
 	var timeElapsed = 0;
-
-	if(typeof req.body.timeElapsed === 'number'){
+	var fields = JSON.parse(JSON.stringify(req.body.form_fields));
+	if (typeof req.body.timeElapsed === 'number') {
 		timeElapsed = req.body.timeElapsed;
 	}
 	var submission = new FormSubmission({
@@ -62,23 +78,35 @@ exports.createSubmission = function(req, res) {
 		geoLocation: req.body.geoLocation,
 		device: req.body.device
 	});
-	if(res.webhook_url)
-	{
-		Form.findById(req.body._id,'webhook_url', { lean: true },function (err, res) {
-			let url = res.webhook_url;
-			request.post(res.webhook_url).form({
+	if (req.body.webhook_url) {
+		Form.findById(req.body._id, 'webhook_url', { lean: true }, function(
+			err,
+			res
+		) {
+			let url = req.body.webhook_url;
+			var vari = {};
+			req.body.variables.forEach(element => {
+				vari = {
+					...vari,
+					[element.name]: [element.value]
+				};
+			});
+
+			fields.forEach(element => {
+				vari = {
+					...vari,
+					[element.title]: [element.fieldValue]
+				};
+			});
+			request.post(req.body.webhook_url).json({
 				form: req.body._id,
-				form_fields: req.body.form_fields
+				form_fields: req.body.form_fields,
+				...vari
 			});
-			//TODO chanege this when introduce varaiable
-			// webhook
-		
-			});
+		});
 	}
 
-	
-
-	submission.save(function(err, submission){
+	submission.save(function(err, submission) {
 		if (err) {
 			console.error(err.message);
 			return res.status(500).send({
@@ -95,23 +123,25 @@ exports.createSubmission = function(req, res) {
 exports.listSubmissions = function(req, res) {
 	var _form = req.form;
 
-	FormSubmission.find({ form: _form._id }).sort('created').lean().exec(function(err, _submissions) {
-		if (err) {
-			console.error(err);
-			res.status(500).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		}
-		res.json(_submissions);
-	});
+	FormSubmission.find({ form: _form._id })
+		.sort('created')
+		.lean()
+		.exec(function(err, _submissions) {
+			if (err) {
+				console.error(err);
+				res.status(500).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			}
+			res.json(_submissions);
+		});
 };
 
 /**
  * Create a new form
  */
 exports.create = function(req, res) {
-	
-	if(!req.body.form){
+	if (!req.body.form) {
 		return res.status(400).send({
 			message: 'Invalid Input'
 		});
@@ -136,28 +166,29 @@ exports.create = function(req, res) {
  * Show the current form
  */
 exports.read = function(req, res) {
-	if(!req.user || (req.form.admin.id !== req.user.id) ){
+	if (!req.user || req.form.admin.id !== req.user.id) {
 		readForRender(req, res);
 	} else {
-			var newForm = req.form.toJSON();
+		var newForm = req.form.toJSON();
 
-			if (req.userId) {
-				if(req.form.admin._id+'' === req.userId+''){
-					return res.json(newForm);
-				}
-				return res.status(404).send({
-					message: 'Form Does Not Exist'
-				});
+		if (req.userId) {
+			if (req.form.admin._id + '' === req.userId + '') {
+				return res.json(newForm);
 			}
-			return res.json(newForm);
+			return res.status(404).send({
+				message: 'Form Does Not Exist'
+			});
+		}
+		return res.json(newForm);
 	}
 };
 
 /**
  * Show the current form for rendering form live
  */
-var readForRender = exports.readForRender = function(req, res) {
+var readForRender = (exports.readForRender = function(req, res) {
 	var newForm = req.form;
+	console.log(newForm);
 	if (!newForm.isLive && !req.user) {
 		return res.status(401).send({
 			message: 'Form is Not Public'
@@ -168,56 +199,54 @@ var readForRender = exports.readForRender = function(req, res) {
 	delete newForm.__v;
 	delete newForm.created;
 
-	if(newForm.startPage && !newForm.startPage.showStart){
+	if (newForm.startPage && !newForm.startPage.showStart) {
 		delete newForm.startPage;
 	}
 
 	return res.json(newForm);
-};
+});
 
 /**
  * Update a form
  */
 exports.update = function(req, res) {
+	var form = req.form;
+	var updatedForm = req.body.form;
+	if (form.form_fields === undefined) {
+		form.form_fields = [];
+	}
 
-    var form = req.form;
-    var updatedForm = req.body.form;
-    if(form.form_fields === undefined){
-    	form.form_fields = [];
-    }
-
-    if(form.analytics === undefined){
-    	form.analytics = {
-    		visitors: [],
-    		gaCode: ''
-    	}
-    }
+	if (form.analytics === undefined) {
+		form.analytics = {
+			visitors: [],
+			gaCode: ''
+		};
+	}
 
 	if (req.body.changes) {
 		var formChanges = req.body.changes;
 
-		formChanges.forEach(function (change) {
+		formChanges.forEach(function(change) {
 			diff.applyChange(form._doc, true, change);
 		});
 	} else {
-
-	    delete updatedForm.__v;
-	    delete updatedForm.created; 
+		delete updatedForm.__v;
+		delete updatedForm.created;
 		//Unless we have 'admin' privileges, updating the form's admin is disabled
-		if(updatedForm && req.user.roles.indexOf('admin') === -1) {
+		if (updatedForm && req.user.roles.indexOf('admin') === -1) {
 			delete updatedForm.admin;
 		}
 
-		if(form.analytics === null){
+		if (form.analytics === null) {
 			form.analytics.visitors = [];
 			form.analytics.gaCode = '';
 		}
 
 		//Do this so we can create duplicate fields
 		var checkForValidId = new RegExp('^[0-9a-fA-F]{24}$');
-		for(var i=0; i < req.body.form.form_fields.length; i++){
+		for (var i = 0; i < req.body.form.form_fields.length; i++) {
 			var field = req.body.form.form_fields[i];
-			if(!checkForValidId.exec(field._id+'')){
+			if (!checkForValidId.exec(field._id + '')) {
 				delete field._id;
 			}
 		}
@@ -226,7 +255,7 @@ exports.update = function(req, res) {
 
 	form.save(function(err, savedForm) {
 		if (err) {
-            res.status(500).send({
+			res.status(500).send({
 				message: errorHandler.getErrorMessage(err)
 			});
 		} else {
@@ -240,7 +269,7 @@ exports.update = function(req, res) {
  */
 exports.delete = function(req, res) {
 	var form = req.form;
-	Form.remove({_id: form._id}, function(err) {
+	Form.remove({ _id: form._id }, function(err) {
 		if (err) {
 			res.status(400).send({
 				message: errorHandler.getErrorMessage(err)
@@ -256,8 +285,8 @@ exports.delete = function(req, res) {
  */
 exports.list = function(req, res) {
 	//Allow 'admin' user to view all forms
-	var searchObj = {admin: req.user};
-	if(req.user.isAdmin()) searchObj = {};
+	var searchObj = { admin: req.user };
+	if (req.user.isAdmin()) searchObj = {};
 
 	Form.find(searchObj)
 		.sort('-created')
@@ -265,21 +294,21 @@ exports.list = function(req, res) {
 		.populate('admin.username', 'admin._id')
 		.lean()
 		.exec(function(err, forms) {
-		if (err) {
-			res.status(400).send({
-				message: errorHandler.getErrorMessage(err)
-			});
-		} else {
-			for(var i=0; i<forms.length; i++){
-				forms[i].numberOfResponses = 0;
-				if(forms[i].submissions){
-					forms[i].numberOfResponses = forms[i].submissions.length;
-					delete forms[i].submissions;
+			if (err) {
+				res.status(400).send({
+					message: errorHandler.getErrorMessage(err)
+				});
+			} else {
+				for (var i = 0; i < forms.length; i++) {
+					forms[i].numberOfResponses = 0;
+					if (forms[i].submissions) {
+						forms[i].numberOfResponses = forms[i].submissions.length;
+						delete forms[i].submissions;
+					}
 				}
+				res.json(forms);
 			}
-			res.json(forms);
-		}
-	});
+		});
 };
 
 /**
@@ -294,24 +323,23 @@ exports.formByID = function(req, res, next, id) {
 	Form.findById(id)
 		.populate('admin')
 		.exec(function(err, form) {
-		if (err) {
-			return next(err);
-		} else if (!form || form === null) {
-			res.status(404).send({
-				message: 'Form not found'
-			});
-		}
-		else {
-			//Remove sensitive information from User object
-			 var _form = form;
-                        _form.admin.password = null;
-                        _form.admin.salt = null;
-                        _form.provider = null;
+			if (err) {
+				return next(err);
+			} else if (!form || form === null) {
+				res.status(404).send({
+					message: 'Form not found'
+				});
+			} else {
+				//Remove sensitive information from User object
+				var _form = form;
+				_form.admin.password = null;
+				_form.admin.salt = null;
+				_form.provider = null;
 
-                        req.form = _form;
-			return next();
-		}
-	});
+				req.form = _form;
+				return next();
+			}
+		});
 };
 
 /**
@@ -325,27 +353,28 @@ exports.formByIDFast = function(req, res, next, id) {
 	}
 	Form.findById(id)
 		.lean()
-		.select('title language form_fields startPage endPage hideFooter isLive design analytics.gaCode')
+		.select(
+			'title language form_fields startPage endPage hideFooter isLive design analytics.gaCode variables webhook_url'
+		)
 		.exec(function(err, form) {
-		if (err) {
-			return next(err);
-		} else if (!form || form === null) {
-			res.status(404).send({
-				message: 'Form not found'
-			});
-		}
-		else {
-			//Remove sensitive information from User object
-			var _form = form;
-			if(_form.admin){
-			_form.admin.password = null;
-			_form.admin.salt = null;
-			_form.provider = null;
+			if (err) {
+				return next(err);
+			} else if (!form || form === null) {
+				res.status(404).send({
+					message: 'Form not found'
+				});
+			} else {
+				//Remove sensitive information from User object
+				var _form = form;
+				if (_form.admin) {
+					_form.admin.password = null;
+					_form.admin.salt = null;
+					_form.provider = null;
+				}
+				req.form = _form;
+				return next();
 			}
-			req.form = _form;
-			return next();
-		}
-	});
+		});
 };
 
 /**
@@ -353,9 +382,16 @@ exports.formByIDFast = function(req, res, next, id) {
  */
 exports.hasAuthorization = function(req, res, next) {
 	var form = req.form;
-	if (req.form.admin.id !== req.user.id && req.user.roles.indexOf('admin') === -1) {
+	if (
+		req.form.admin.id !== req.user.id &&
+		req.user.roles.indexOf('admin') === -1
+	) {
 		res.status(403).send({
-			message: 'User '+req.user.username+' is not authorized to edit Form: '+form.title
+			message:
+				'User ' +
+				req.user.username +
+				' is not authorized to edit Form: ' +
+				form.title
 		});
 	}
 	return next();

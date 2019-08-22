@@ -532,6 +532,7 @@
 						"email",
 						"link",
 						"legal",
+						"plate",
 						"url",
 						"textarea",
 						"statement",

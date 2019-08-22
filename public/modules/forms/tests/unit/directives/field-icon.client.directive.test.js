@@ -77,7 +77,11 @@
                 {
                     name : 'statement',
                     value : 'Statement'
-                }
+                },
+				{
+					name: 'plate',
+					value : "License"
+				}
             ]
         };
         beforeEach(module(function($provide) {

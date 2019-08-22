@@ -118,6 +118,7 @@ function BaseFieldSchema(){
 				'email',
 				'link',
 				'legal',
+				'plate',
 				'url',
 				'textarea',
 				'statement',
