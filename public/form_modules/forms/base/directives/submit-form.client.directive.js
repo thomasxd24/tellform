@@ -37,11 +37,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 							...element
 						}
 					});
-					$scope.myform.variables.forEach(element =>
-						{
-							var value = vari[element.name]?vari[element.name]:"";
-							element.value = value;
-						})
+					$scope.myform.variables = vari
 						console.log($scope.myform.variables)
 
 				}
