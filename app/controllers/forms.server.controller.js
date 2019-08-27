@@ -84,23 +84,18 @@ exports.createSubmission = function(req, res) {
 			res
 		) {
 			let url = req.body.webhook_url;
-			var vari = {};
-			req.body.variables.forEach(element => {
-				vari = {
-					...vari,
-					[element.name]: [element.value]
-				};
-			});
+			var vari = {...req.body.variables};
 
 			fields.forEach(element => {
 				vari = {
 					...vari,
-					[element.title]: [element.fieldValue]
+					[element.title]: element.fieldValue
 				};
 			});
+
 			request.post(req.body.webhook_url).json({
 				form: req.body._id,
-				form_fields: req.body.form_fields,
+				titre: req.body.title,
 				...vari
 			});
 		});

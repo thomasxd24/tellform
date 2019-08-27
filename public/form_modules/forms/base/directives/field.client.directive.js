@@ -119,7 +119,7 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 							break;
 						case 'number':
 							scope.input_type = 'text';
-							scope.validateRegex = /^\d{0,2}(\.\d{1,2})?$/;
+							scope.validateRegex = /^\d+(\,\d+)?$/;
 							break;
 						case 'phone':
 						scope.input_type = 'tel';
