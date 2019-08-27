@@ -40,6 +40,7 @@ angular.module('view-form').value('supportedFields', [
 	'radio',
 	'legal',
 	'plate',
+	'phone',
 	'statement',
 	'rating',
 	'yes_no',

@@ -7,6 +7,7 @@ module.exports = {
 				'link',
 				'legal',
 				'plate',
+				'phone',
 				'url',
 				'textarea',
 				'statement',

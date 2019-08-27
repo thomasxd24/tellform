@@ -24,6 +24,7 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 				'radio',
 				'legal',
 				'plate',
+				'phone',
 				'statement',
 				'rating',
 				'yes_no',
@@ -120,6 +121,9 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 							scope.input_type = 'text';
 							scope.validateRegex = /^\d{0,2}(\.\d{1,2})?$/;
 							break;
+						case 'phone':
+						scope.input_type = 'tel';
+						break;
 						default:
 							scope.input_type = 'url';
 							scope.placeholder = 'http://example.com';

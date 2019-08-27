@@ -82,6 +82,11 @@
 					name: 'plate',
 					value : "License"
 				}
+				,
+				{
+					name: 'phone',
+					value : "Telephone"
+				}
             ]
         };
         beforeEach(module(function($provide) {

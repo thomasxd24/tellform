@@ -75,6 +75,10 @@ angular.module('forms').service('FormFields', [ '$rootScope', '$translate', 'Aut
 			{
 				name: 'plate',
 				value : "License"
+			},
+			{
+				name: 'phone',
+				value : "Telephone"
 			}
 		];
 	}
