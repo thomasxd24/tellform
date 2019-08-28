@@ -87,6 +87,11 @@
 					name: 'phone',
 					value : "Telephone"
 				}
+				,
+				{
+					name: 'scale',
+					value : "Scale"
+				}
             ]
         };
         beforeEach(module(function($provide) {

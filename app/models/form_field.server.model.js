@@ -164,8 +164,9 @@ var FormFieldSchema = new BaseFieldSchema();
 FormFieldSchema.pre('validate', function(next) {
 	var error = new mongoose.Error.ValidationError(this);
 
+
 	//If field is rating check that it has ratingOptions
-	if(this.fieldType !== 'rating'){
+	if(this.fieldType !== 'rating' && this.fieldType !== 'scale'){
 
 		if(this.ratingOptions && this.ratingOptions.steps && this.ratingOptions.shape){
 			error.errors.ratingOptions = new mongoose.Error.ValidatorError({path: 'ratingOptions', message: 'ratingOptions is only allowed for type \'rating\' fields.', type: 'notvalid', value: this.ratingOptions});

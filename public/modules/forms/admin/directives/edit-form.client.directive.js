@@ -123,7 +123,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 
 							// decides whether field options block will be shown (true for dropdown and radio fields)
 							$scope.showRatingOptions = function () {
-								if ($scope.field.fieldType === 'rating') {
+								if ($scope.field.fieldType === 'rating' || $scope.field.fieldType === 'scale') {
 									return true;
 								} else {
 									return false;
@@ -317,7 +317,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 						logicJump: []
 					};
 
-					if (fieldType === 'rating') {
+					if (fieldType === 'rating' || fieldType === 'scale') {
 						newField.ratingOptions = {
 							steps: 5,
 							shape: 'Heart'
@@ -348,7 +348,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 
 				// decides whether field options block will be shown (true for dropdown and radio fields)
 				$scope.showRatingOptions = function (field) {
-					if (field.fieldType === 'rating') {
+					if (field.fieldType === 'rating' || field.fieldType === 'scale') {
 						return true;
 					} else {
 						return false;

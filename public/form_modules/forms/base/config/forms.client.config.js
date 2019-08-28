@@ -41,6 +41,7 @@ angular.module('view-form').value('supportedFields', [
 	'legal',
 	'plate',
 	'phone',
+	'scale',
 	'statement',
 	'rating',
 	'yes_no',

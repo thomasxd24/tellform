@@ -24,6 +24,7 @@ angular.module('view-form').directive('fieldDirective', ['$http', '$compile', '$
 				'radio',
 				'legal',
 				'plate',
+				'scale',
 				'phone',
 				'statement',
 				'rating',

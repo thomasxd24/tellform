@@ -80,6 +80,11 @@ angular.module('forms').service('FormFields', [ '$rootScope', '$translate', 'Aut
 				name: 'phone',
 				value : "Telephone"
 			}
+			,
+			{
+				name: 'scale',
+				value : "Scale"
+			}
 		];
 	}
 
