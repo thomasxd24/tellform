@@ -36,7 +36,17 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 							...vari,
 							...element
 						}
+						
+
 					});
+					var keys = Object.getOwnPropertyNames(vari)
+					$scope.myform.form_field.forEach(element=>
+						{
+							if(element.variable = keys)
+							{
+								
+							}
+						})
 					$scope.myform.variables = vari
 						console.log($scope.myform.variables)
 

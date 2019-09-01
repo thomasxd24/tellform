@@ -375,6 +375,18 @@
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-md-4 col-xs-12 field-input">Variables:</div>
+						<div class="col-md-8 col-xs-12 field-input">
+							<select style="width:70%" ng-model="field.variable"
+									value="{{field.variable}}">
+								<option ng-repeat="var in myform.variables"
+										value="{{var.name}}">
+										{{var.name}}
+								</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
 						<div class="col-md-4 col-xs-12 field-input">Only show on jump</div>
 						<div class="col-md-8 col-xs-12 field-input">
 							<label class="switch-light switch-holo" onclick="">

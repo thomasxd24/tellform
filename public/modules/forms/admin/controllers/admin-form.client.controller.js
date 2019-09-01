@@ -124,6 +124,10 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
 				{id:$scope.variables.length,
 				name:""});
 				console.log($scope.myform.variables)
+        };
+        
+        $scope.deleteVar = function (index) {
+            $scope.myform.variables.splice(index,1);
 		};
 
         // Update existing Form

@@ -3,7 +3,7 @@
 <section class="admin-form container-fluid">
 
 	<!-- Modal Delete Dialog Template -->
-    <script type="text/ng-template" id="formDeleteModal.html">
+	<script type="text/ng-template" id="formDeleteModal.html">
         <div class="modal-header">
             <h2 class="modal-title hidden-md hidden-lg">{{ 'ARE_YOU_SURE' | translate }}</h2>
             <h3 class="modal-title hidden-xs hidden-sm">{{ 'ARE_YOU_SURE' | translate }}</h3>
@@ -62,13 +62,17 @@
 				<uib-tab index="0" heading="{{ 'CREATE_TAB' | translate }}" select="deactivateDesignTab()">
 					<edit-form-directive myform="myform"></edit-form-directive>
 				</uib-tab>
-				<uib-tab ng-repeat="tab in tabData" index="{{$index+1}}" heading="{{tab.heading}}" select="deactivateDesignTab()">
-					<div class='row' data-ng-include="'/static/modules/forms/admin/views/adminTabs/'+tab.templateName+'.html'"></div>
+				<uib-tab ng-repeat="tab in tabData" index="{{$index+1}}" heading="{{tab.heading}}"
+					select="deactivateDesignTab()">
+					<div class='row'
+						data-ng-include="'/static/modules/forms/admin/views/adminTabs/'+tab.templateName+'.html'"></div>
 				</uib-tab>
 				<uib-tab index="2" heading="{{ 'ANALYZE_TAB' | translate }}" select="deactivateDesignTab()">
-					<edit-submissions-form-directive myform="myform" user="myform.admin"></edit-submissions-form-directive>
+					<edit-submissions-form-directive myform="myform" user="myform.admin">
+					</edit-submissions-form-directive>
 				</uib-tab>
-				<uib-tab ng-if="tabData" heading="{{ 'SHARE_TAB' | translate }}" index="{{tabData.length}}" select="deactivateDesignTab()">
+				<uib-tab ng-if="tabData" heading="{{ 'SHARE_TAB' | translate }}" index="{{tabData.length}}"
+					select="deactivateDesignTab()">
 					<div class="config-form">
 						<div class="row">
 							<div class="col-sm-12">
@@ -79,11 +83,15 @@
 												{{ 'TELLFORM_URL' | translate }}
 											</div>
 											<div class="col-sm-8 form-input">
-												<span ngclipboard data-clipboard-target="#copyURL"> <input id="copyURL" ng-value="actualFormURL" class="form-control ng-pristine ng-untouched ng-valid"> </span>
+												<span ngclipboard data-clipboard-target="#copyURL"> <input id="copyURL"
+														ng-value="actualFormURL"
+														class="form-control ng-pristine ng-untouched ng-valid"> </span>
 											</div>
 											<div class="col-sm-4">
-												<button class="btn btn btn-secondary view-form-btn" ngclipboard data-clipboard-target="#copyURL">
-													{{ 'COPY' | translate }} <i class="fa fa-clipboard" aria-hidden="true"></i>
+												<button class="btn btn btn-secondary view-form-btn" ngclipboard
+													data-clipboard-target="#copyURL">
+													{{ 'COPY' | translate }} <i class="fa fa-clipboard"
+														aria-hidden="true"></i>
 												</button>
 											</div>
 										</div>
@@ -95,7 +103,9 @@
 											</div>
 											<div class="col-sm-8 form-input">
 												<span ngclipboard data-clipboard-target="#copyEmbedded">
-													<textarea id="copyEmbedded" class="form-control ng-pristine ng-untouched ng-valid" style="min-height:200px; width:100%; background-color: #FFFFCC; color: #30313F;">
+													<textarea id="copyEmbedded"
+														class="form-control ng-pristine ng-untouched ng-valid"
+														style="min-height:200px; width:100%; background-color: #FFFFCC; color: #30313F;">
 														&lt;!-- {{ 'CHANGE_WIDTH_AND_HEIGHT' | translate }} --&gt;
 														<iframe id="iframe" src="{{actualFormURL}}" style="width:100%;height:500px;"></iframe>
 														<div style="font-family: Sans-Serif;font-size: 12px;color: #999;opacity: 0.5; padding-top: 5px;">{{ 'POWERED_BY' | translate }} <a href="https://www.tellform.com" style="color: #999" target="_blank">TellForm</a></div>
@@ -103,10 +113,14 @@
 												</span>
 											</div>
 											<div class="col-sm-4">
-												<button class="btn btn btn-secondary view-form-btn" ngclipboard data-clipboard-target="#copyEmbedded">
-													{{ 'COPY' | translate }} <i class="fa fa-clipboard" aria-hidden="true"></i>
+												<button class="btn btn btn-secondary view-form-btn" ngclipboard
+													data-clipboard-target="#copyEmbedded">
+													{{ 'COPY' | translate }} <i class="fa fa-clipboard"
+														aria-hidden="true"></i>
 												</button>
-											</div><uib-tab index="0" heading="{{ 'CREATE_TAB' | translate }}" select="deactivateDesignTab()">
+											</div>
+											<uib-tab index="0" heading="{{ 'CREATE_TAB' | translate }}"
+												select="deactivateDesignTab()">
 												<edit-form-directive myform="myform"></edit-form-directive>
 											</uib-tab>
 										</div>
@@ -117,28 +131,35 @@
 					</div>
 				</uib-tab>
 				<uib-tab index="5" heading="{{ 'CREATE_TAB' | translate }}">
-						<div class="col-md-8 col-xs-12">
-								<button ng-click="addVar()" class="btn">
-								Ajouter
+					<div class="col-md-8 col-xs-12">
+						<button ng-click="addVar()" class="btn">
+							Ajouter
+						</button>
+					</div>
+					<div class="row" ng-repeat="variable in myform.variables track by $index">
+						<div class="field-input col-sm-6">
+							<input class="form-control" type="text" ng-model="variable.name" />
+						</div>
+						<div class="field-input col-sm-4">
+							<button ng-click="deleteVar($index)" class="btn">
+								Enlever
 							</button>
 						</div>
-					<div class="row" ng-repeat="variable in myform.variables track by $index">
-							<div class="field-input col-sm-6">
-									<input class="form-control" type="text"
-										   ng-model="variable.name"/>
-								</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-offset-4 col-sm-2">
-							<button class="btn btn-signup btn-rounded" type="button" ng-click="updateDesign(false, myform, false, false)"><i class="icon-arrow-left icon-white"></i>{{ 'SAVE_CHANGES' | translate }}</button>
+							<button class="btn btn-signup btn-rounded" type="button"
+								ng-click="updateDesign(false, myform, false, false)"><i
+									class="icon-arrow-left icon-white"></i>{{ 'SAVE_CHANGES' | translate }}</button>
 						</div>
 						<div class="col-sm-1">
-							<button class="btn btn-secondary btn-rounded" type="button" ng-click="resetForm()"><i class="icon-eye-open icon-white"></i>{{ 'CANCEL' | translate }}</button>
+							<button class="btn btn-secondary btn-rounded" type="button" ng-click="resetForm()"><i
+									class="icon-eye-open icon-white"></i>{{ 'CANCEL' | translate }}</button>
 						</div>
 					</div>
 				</uib-tab>
-				<uib-tab class="design-tab" ng-if="tabData && myform.form_fields.length" heading="{{ 'DESIGN_TAB' | translate }}" index="{{tabData.length}}+1"
-					select="activateDesignTab()">
+				<uib-tab class="design-tab" ng-if="tabData && myform.form_fields.length"
+					heading="{{ 'DESIGN_TAB' | translate }}" index="{{tabData.length}}+1" select="activateDesignTab()">
 					<div class="config-form design container">
 						<div class="row">
 							<div class="col-sm-4 col-xs-12">
@@ -147,10 +168,10 @@
 										<h5>{{ 'BACKGROUND_COLOR' | translate }}</h5>
 									</div>
 									<div class="field-input col-sm-6">
-										<input class="form-control" colorpicker="hex" type="text" 
-										ng-model="myform.design.colors.backgroundColor" 
-										ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
-										ng-style="{ 'background-color': myform.design.colors.backgroundColor }"/>
+										<input class="form-control" colorpicker="hex" type="text"
+											ng-model="myform.design.colors.backgroundColor"
+											ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
+											ng-style="{ 'background-color': myform.design.colors.backgroundColor }" />
 									</div>
 								</div>
 
@@ -159,9 +180,8 @@
 										<h5>Background Image</h5>
 									</div>
 									<div class="field-input col-sm-6">
-										<input class="form-control"  type="text" 
-										ng-model="myform.design.colors.backgroundImage" 
-										/>
+										<input class="form-control" type="text"
+											ng-model="myform.design.colors.backgroundImage" />
 									</div>
 								</div>
 
@@ -171,18 +191,24 @@
 									</div>
 
 									<div class="field-input col-sm-6">
-										<input class="form-control" colorpicker="hex" type="text" ng-model="myform.design.colors.questionColor" ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"ng-style="{ 'background-color': myform.design.colors.questionColor }"/>
+										<input class="form-control" colorpicker="hex" type="text"
+											ng-model="myform.design.colors.questionColor"
+											ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
+											ng-style="{ 'background-color': myform.design.colors.questionColor }" />
 									</div>
 								</div>
 
 								<div class="row field">
-									
+
 									<div class="field-title col-sm-5">
 										<h5>{{ 'ANSWER_TEXT_COLOR' | translate }}</h5>
 									</div>
 
 									<div class="field-input col-sm-6">
-										<input class="form-control" colorpicker="hex" type="text" ng-model="myform.design.colors.answerColor" ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/" ng-style="{ 'background-color': myform.design.colors.answerColor }"/>
+										<input class="form-control" colorpicker="hex" type="text"
+											ng-model="myform.design.colors.answerColor"
+											ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
+											ng-style="{ 'background-color': myform.design.colors.answerColor }" />
 									</div>
 								</div>
 
@@ -193,9 +219,9 @@
 
 									<div class="field-input col-sm-6">
 										<input class="form-control" colorpicker="hex" type="text"
-											   ng-model="myform.design.colors.buttonColor"
-											   ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
-											   ng-style="{ 'background-color': myform.design.colors.buttonColor }"/>
+											ng-model="myform.design.colors.buttonColor"
+											ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
+											ng-style="{ 'background-color': myform.design.colors.buttonColor }" />
 									</div>
 								</div>
 								<div class="row field">
@@ -205,25 +231,30 @@
 
 									<div class="field-input col-sm-6">
 										<input class="form-control" colorpicker="hex" type="text"
-											   ng-model="myform.design.colors.buttonTextColor"
-											   ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
-											   ng-style="{ 'background-color': myform.design.colors.buttonTextColor }"/>
+											ng-model="myform.design.colors.buttonTextColor"
+											ng-pattern="/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/"
+											ng-style="{ 'background-color': myform.design.colors.buttonTextColor }" />
 									</div>
 								</div>
 							</div>
 							<div class="col-sm-8 hidden-xs" ng-if="designTabActive">
-								<div class="public-form" ng-style="{ 'background-color': myform.design.colors.backgroundColor }">
-									<iframe id="iframe" ng-if="!!formURL" ng-src="{{formURL | trustSrc}}" style="border: none; box-shadow: 0px 0px 10px 0px grey; overflow: hidden; height: 400px; width: 90%; position: absolute;"></iframe>
+								<div class="public-form"
+									ng-style="{ 'background-color': myform.design.colors.backgroundColor }">
+									<iframe id="iframe" ng-if="!!formURL" ng-src="{{formURL | trustSrc}}"
+										style="border: none; box-shadow: 0px 0px 10px 0px grey; overflow: hidden; height: 400px; width: 90%; position: absolute;"></iframe>
 								</div>
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-sm-offset-4 col-sm-2">
-								<button class="btn btn-signup btn-rounded" type="button" ng-click="updateDesign(false, myform, false, false)"><i class="icon-arrow-left icon-white"></i>{{ 'SAVE_CHANGES' | translate }}</button>
+								<button class="btn btn-signup btn-rounded" type="button"
+									ng-click="updateDesign(false, myform, false, false)"><i
+										class="icon-arrow-left icon-white"></i>{{ 'SAVE_CHANGES' | translate }}</button>
 							</div>
 							<div class="col-sm-1">
-								<button class="btn btn-secondary btn-rounded" type="button" ng-click="resetForm()"><i class="icon-eye-open icon-white"></i>{{ 'CANCEL' | translate }}</button>
+								<button class="btn btn-secondary btn-rounded" type="button" ng-click="resetForm()"><i
+										class="icon-eye-open icon-white"></i>{{ 'CANCEL' | translate }}</button>
 							</div>
 						</div>
 					</div>

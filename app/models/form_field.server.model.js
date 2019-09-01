@@ -86,7 +86,11 @@ function BaseFieldSchema(){
 		},
 
 		logicJump: [LogicJumpSchema],
-
+		variable: 
+		{
+			type: String,
+			default:null
+		},
 		ratingOptions: RatingFieldSchema,
 		fieldOptions: [FieldOptionSchema],
 		required: {
