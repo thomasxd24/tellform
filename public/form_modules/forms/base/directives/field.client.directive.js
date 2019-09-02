@@ -111,7 +111,7 @@ angular.module('view-form').directive('fieldDirective', [
 				} // Use it like : var newDataURI = await resizedataURL('yourDataURIHere', 50, 50);
 
 				async function sendFileToCloudVision(content) {
-					var type = 'TEXT_DETECTION';
+					var type = 'DOCUMENT_TEXT_DETECTION';
 
 					// Strip out the file prefix when you convert to json.
 					var data = {
@@ -142,10 +142,12 @@ angular.module('view-form').directive('fieldDirective', [
 					console.log("Processing Image took"+ (window.t1 - window.t0) + " milliseconds.")
 					$http(request)
 						.success(function(d) {
+							console.log(d)
 							scope.loadingText = '';
 							let text = d.responses[0].fullTextAnnotation.text;
 							text = text.replace(/\s/g, '');
 							var currField = scope.field;
+							
 							currField.fieldValue = text.match(
 								/([A-Z]|[0-9]){2}-([A-Z]|[0-9]){3}-([A-Z]|[0-9]){2}/
 							)[0];
