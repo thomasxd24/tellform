@@ -36,7 +36,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 							...vari,
 							...element
 						}
-						
+
 
 					});
 					var keys = Object.getOwnPropertyNames(vari)
@@ -44,7 +44,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						{
 							if(element.variable = keys)
 							{
-								
+
 							}
 						})
 					$scope.myform.variables = vari
@@ -67,12 +67,16 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				$scope.reloadForm = function () {
 					//Reset Form
-					console.log("hi")
+
 					$scope.myform.submitted = false;
 					$scope.myform.form_fields = _.chain($scope.myform.visible_form_fields).map(function (field) {
 						field.fieldValue = '';
 						return field;
 					}).value();;
+					console.log($scope.myform.visible_form_fields)
+
+
+					console.log($scope.myform.form_fields)
 
 					$scope.loading = false;
 					$scope.error = '';
@@ -94,7 +98,6 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				var evaluateLogicJump = function (field, jump) {
 					var logicJump = jump;
-					console.log(window.location.href)
 					if (logicJump.expressionString && logicJump.valueB && field.fieldValue) {
 						var parse_tree = jsep(logicJump.expressionString);
 						var left, right;
@@ -111,7 +114,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 							switch (parse_tree.operator) {
 								case '==':
 									return (parseInt(left) === parseInt(right));
-								case '!==':
+								case '!=':
 									return (parseInt(left) !== parseInt(right));
 								case '>':
 									return (parseInt(left) > parseInt(right));
@@ -128,7 +131,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 							switch (parse_tree.operator) {
 								case '==':
 									return (left === right);
-								case '!==':
+								case '!=':
 									return (left !== right);
 								case 'contains':
 									return (left.indexOf(right) > -1);
@@ -174,7 +177,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					if ($scope.selected === null || (!field_id && field_index === null)) {
 						return;
 					}
-					if (fromJump) {
+					if(fromJump)
+					{
 						for (var i = 0; i < $scope.myform.original_form_fields.length; i++) {
 							var currField = $scope.myform.original_form_fields[i];
 							if (currField['_id'] == field_id) {
@@ -182,16 +186,16 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 								break;
 							}
 						}
-
 					}
 
-					if (!field_id) {
-						field_id = $scope.myform.visible_form_fields[field_index]._id;
-					} else if (field_index === null) {
-						field_index = $scope.myform.visible_form_fields.length
 
-						for (var i = 0; i < $scope.myform.visible_form_fields.length; i++) {
-							var currField = $scope.myform.visible_form_fields[i];
+					if (!field_id) {
+						field_id = $scope.myform.form_fields[field_index]._id;
+					} else if (field_index === null) {
+						field_index = $scope.myform.form_fields.length
+
+						for (var i = 0; i < $scope.myform.form_fields.length; i++) {
+							var currField = $scope.myform.form_fields[i];
 							if (currField['_id'] == field_id) {
 								field_index = i;
 								break;
@@ -205,7 +209,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 					$scope.selected._id = field_id;
 					$scope.selected.index = field_index;
-
+					console.log($scope.selected)
 
 					var nb_valid = $filter('formValidity')($scope.myform);
 					$scope.translateAdvancementData = {
@@ -240,8 +244,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					if (oldValue !== newValue && newValue < $scope.myform.form_fields.length) {
 						//Only send analytics data if form has not been submitted
 						if (!$scope.myform.submitted) {
-							console.log('SendVisitorData.send()');
-							SendVisitorData.send($scope.myform, newValue, TimeCounter.getTimeElapsed());
+							// console.log('SendVisitorData.send()');
+							// SendVisitorData.send($scope.myform, newValue, TimeCounter.getTimeElapsed());
 						}
 					}
 				});
@@ -272,7 +276,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						if ($scope.selected.index === $scope.myform.visible_form_fields.length) {
 							if (scrollTop < scrollPosition) {
 								field_index = $scope.selected.index - 1;
-								$scope.setActiveField(null, field_index, false);
+								// $scope.setActiveField(null, field_index, false);
 							}
 						}
 
@@ -299,14 +303,15 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				$rootScope.nextField = $scope.nextField = function () {
 					if ($scope.selected && $scope.selected.index > -1) {
-
+						console.log($scope.selected)
 						if ($scope.selected._id !== FORM_ACTION_ID) {
 
 							var currField = $scope.myform.form_fields[$scope.selected.index];
 							let logicJumped = false;
+							console.log(currField.logicJump)
 							for (let index = 0; index < currField.logicJump.length; index++) {
+								console.log("hi")
 								const jump = currField.logicJump[index];
-								console.log(jump)
 								if (evaluateLogicJump(currField, jump)) {
 									$scope.setActiveField(jump.jumpTo, null, true, true);
 									logicJumped = true;
@@ -314,10 +319,19 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 								}
 							}
 							if (!logicJumped) {
-								if ($scope.selected.index < $scope.myform.visible_form_fields.length - 1) {
-									$scope.setActiveField(null, $scope.selected.index + 1, true, false);
-								} else {
-									$scope.setActiveField(FORM_ACTION_ID, null, true);
+								for (var i = 0; i < $scope.myform.original_form_fields.length; i++) {
+									var currFieldi = $scope.myform.original_form_fields[i];
+									if (currFieldi['_id'] == currField['_id']) {
+										if($scope.myform.original_form_fields[i+1])
+										{
+											$scope.setActiveField($scope.myform.original_form_fields[i+1]._id, null, true, true);
+										}
+										else{
+											$scope.setActiveField(FORM_ACTION_ID, null, true);
+										}
+
+										break;
+									}
 								}
 							}
 						} else {

@@ -79,19 +79,10 @@ var formSchemaOptions = {
 	}
 };
 
-var variableSchema = new Schema(
-	{
-		id:
-		{
-			type: Number
-		},
-		name:
-		{
-			type:String
-		}
-	}
-)
 
+var webhookSchema = new Schema({
+	name:{String}
+})
 /**
  * Form Schema
  */
@@ -147,7 +138,7 @@ var FormSchema = new Schema({
         },
 		buttons:[ButtonSchema]
 	},
-	variables:[variableSchema],
+	webhooks:[webhookSchema],
 	endPage: {
 		showEnd:{
 			type: Boolean,

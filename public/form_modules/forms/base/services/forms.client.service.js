@@ -11,9 +11,10 @@ angular.module('view-form').factory('Forms', ['$resource', 'VIEW_FORM_URL',
 				transformResponse: function(data, header) {
 		          	var form = angular.fromJson(data);
 					form.original_form_fields = form.form_fields;
-					form.visible_form_fields = _.filter(form.form_fields, function(field){
-		            	return (field.deletePreserved === false && field.showOnJump === false);
-		            });
+					// form.visible_form_fields = _.filter(form.form_fields, function(field){
+		            // 	return (field.deletePreserved === false && field.showOnJump === false);
+					// });
+					form.visible_form_fields = [form.form_fields[0]]
 		          	return form;
 		        }
 			},

@@ -134,11 +134,12 @@
 					<div class="col-md-8 col-xs-12">
 						<button ng-click="addVar()" class="btn">
 							Ajouter
+							
 						</button>
 					</div>
-					<div class="row" ng-repeat="variable in myform.variables track by $index">
+					<div class="row" ng-repeat="hook in myform.webhooks track by $index">
 						<div class="field-input col-sm-6">
-							<input class="form-control" type="text" ng-model="variable.name" />
+							<input class="form-control" type="text" ng-model="hook.name" />
 						</div>
 						<div class="field-input col-sm-4">
 							<button ng-click="deleteVar($index)" class="btn">

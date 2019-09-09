@@ -118,16 +118,14 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                 refreshFrame();
             });
 		}
-		$scope.variables = []
+		$scope.webhooks = []
 		$scope.addVar = function () {
-			$scope.myform.variables.push(
-				{id:$scope.variables.length,
-				name:""});
-				console.log($scope.myform.variables)
+			$scope.myform.webhooks.push(
+				{name:""});
         };
-        
+
         $scope.deleteVar = function (index) {
-            $scope.myform.variables.splice(index,1);
+            $scope.myform.webhooks.splice(index,1);
 		};
 
         // Update existing Form
