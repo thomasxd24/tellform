@@ -96,6 +96,7 @@ exports.createSubmission = function(req, res) {
 			request.post(req.body.webhook_url).json({
 				form: req.body._id,
 				titre: req.body.title,
+				date: new Date(),
 				...vari
 			});
 		});
