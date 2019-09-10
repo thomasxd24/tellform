@@ -296,8 +296,14 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 				$rootScope.nextField = $scope.nextField = function () {
 					if ($scope.selected && $scope.selected.index > -1) {
 						if ($scope.selected._id !== FORM_ACTION_ID) {
+							
+							
 
 							var currField = $scope.myform.form_fields[$scope.selected.index];
+							if(currField.logicJump.length!=0)
+							{
+								$scope.myform.form_fields = $scope.myform.form_fields.slice(0,$scope.selected.index+1)
+							}
 							let logicJumped = false;
 							for (let index = 0; index < currField.logicJump.length; index++) {
 								const jump = currField.logicJump[index];
