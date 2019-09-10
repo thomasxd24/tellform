@@ -4,7 +4,7 @@
 angular.module('view-form')
 .filter('formValidity', function(){
 	return function(formObj){
-		if(formObj && formObj.form_fields && formObj.visible_form_fields){
+		if(formObj && formObj.form_fields ){
 
 			//get keys
 			var formKeys = Object.keys(formObj);
@@ -24,7 +24,7 @@ angular.module('view-form')
 				}
 
 			}).length;
-			return valid_count - (formObj.form_fields.length - formObj.visible_form_fields.length);
+			return valid_count - (formObj.form_fields.length - formObj.form_fields.length);
 		}
 		return 0;
 	};
@@ -39,6 +39,7 @@ angular.module('view-form').value('supportedFields', [
 	'password',
 	'radio',
 	'legal',
+	'checkbox',
 	'plate',
 	'phone',
 	'scale',

@@ -28,6 +28,7 @@ angular.module('view-form').directive('fieldDirective', [
 				'hidden',
 				'password',
 				'radio',
+				'checkbox',
 				'legal',
 				'plate',
 				'scale',
@@ -147,7 +148,7 @@ angular.module('view-form').directive('fieldDirective', [
 							let text = d.responses[0].fullTextAnnotation.text;
 							text = text.replace(/\s/g, '');
 							var currField = scope.field;
-							
+
 							currField.fieldValue = text.match(
 								/([A-Z]|[0-9]){2}-([A-Z]|[0-9]){3}-([A-Z]|[0-9]){2}/
 							)[0];
@@ -158,6 +159,25 @@ angular.module('view-form').directive('fieldDirective', [
 							console.log(f);
 						});
 				}
+
+				scope.toggleSelection = function toggleSelection(name,field) {
+					if(!field.values) field.values = []
+					var idx = field.values.indexOf(name);
+
+					// Is currently selected
+					if (idx > -1) {
+						field.values.splice(idx, 1);
+					}
+
+					// Is newly selected
+					else {
+						field.values.push(name);
+					}
+					field.fieldValue = field.values.join(", ")
+
+					console.log(field.fieldValue)
+					console.log(field)
+				  };
 
 				scope.uploadFile = function(item) {
 					window.t0 = performance.now();

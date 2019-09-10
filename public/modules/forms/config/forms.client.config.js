@@ -32,7 +32,7 @@ angular.module('forms').run(['Menus',
 					}
 
 				}).length;
-				return valid_count - (formObj.form_fields.length - formObj.visible_form_fields.length);
+				return valid_count;
 			}
 			return 0;
         };

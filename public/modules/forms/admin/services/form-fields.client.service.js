@@ -19,6 +19,10 @@ angular.module('forms').service('FormFields', [ '$rootScope', '$translate', 'Aut
 		    {
 		        name : 'radio',
 		        value : $translate.instant('MULTIPLE_CHOICE'),
+			},
+			{
+		        name : 'checkbox',
+		        value : "Checkbox",
 		    },
 		    {
 		        name : 'dropdown',

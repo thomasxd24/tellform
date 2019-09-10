@@ -32,18 +32,36 @@
 						</div>
 				
 				
-				<input ng-style="{'color': design.colors.answerColor, 'border-color': design.colors.answerColor, 'display': 'none'}"
+				<input ng-style="{'color': design.colors.answerColor, 'border-color': design.colors.answerColor}"
 				    ng-focus="setActiveField(field._id, null, false)"
-                    type="radio" class="focusOn"
+					type="checkbox" class="focusOn"
+					ng-checked="field.values.indexOf(option.option_value) > -1"
+					ng-click="toggleSelection(option.option_value,field)"
+					name="field._id"
 				    value="{{option.option_value}}"
                     ng-model="field.fieldValue"
-                    ng-model-options="{ debounce: 250 }"
-                    ng-required="field.required"
-					ng-change="$root.nextField()"/>
+                    ng-model-options="{ debounce: 250 }"/>
 					
                 <span ng-bind="option.option_value"></span>
             </label>
         </div>
     </div>
 </div>
+<div>
+		<div class="btn btn-lg btn-default" ng-disabled="!field.fieldValue"
+			 style="padding: 4px; margin-top:8px; background: rgba(255,255,255,0.5)">
+				<button ng-disabled="!field.fieldValue"
+					ng-style="{'background-color':design.colors.buttonColor, 'color':design.colors.buttonTextColor}"
+					ng-click="nextField()"
+					class="btn col-sm-5 col-xs-5">
+	
+					{{ 'OK' | translate }} <i class="fa fa-check"></i>
+				</button>
+				<div class="col-xs-6 col-sm-3" style="margin-top:0.2em">
+					<small style="color:#ddd; font-size:70%">
+					{{ 'ENTER' | translate }}
+					</small>
+				</div>
+		</div>
+	</div>
 <br>

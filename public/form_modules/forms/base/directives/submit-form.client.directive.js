@@ -41,13 +41,12 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					});
 					var keys = Object.getOwnPropertyNames(vari)
 					$scope.myform.variables = vari
-						console.log($scope.myform.variables)
 
 				}
 
 
 
-				var form_fields_count = $scope.myform.visible_form_fields.filter(function (field) {
+				var form_fields_count = $scope.myform.form_fields.filter(function (field) {
 					return field.fieldType !== 'statement';
 				}).length;
 
@@ -62,14 +61,12 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					//Reset Form
 
 					$scope.myform.submitted = false;
+					$scope.myform.visible_form_fields = [$scope.myform.visible_form_fields[0]]
 					$scope.myform.form_fields = _.chain($scope.myform.visible_form_fields).map(function (field) {
 						field.fieldValue = '';
 						return field;
 					}).value();;
-					console.log($scope.myform.visible_form_fields)
-
-
-					console.log($scope.myform.form_fields)
+					console.log($scope.myform.original_form_fields)
 
 					$scope.loading = false;
 					$scope.error = '';
@@ -78,7 +75,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						_id: '',
 						index: 0
 					};
-					$scope.setActiveField($scope.myform.visible_form_fields[0]._id, 0, false);
+					$scope.setActiveField($scope.myform.form_fields[0]._id, 0, false);
 
 					//Reset Timer
 					TimeCounter.restartClock();
@@ -175,7 +172,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						for (var i = 0; i < $scope.myform.original_form_fields.length; i++) {
 							var currField = $scope.myform.original_form_fields[i];
 							if (currField['_id'] == field_id) {
-								$scope.myform.form_fields.push(currField);
+								$scope.myform.form_fields.push(JSON.parse(JSON.stringify(currField)));
 								break;
 							}
 						}
@@ -202,7 +199,6 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 					$scope.selected._id = field_id;
 					$scope.selected.index = field_index;
-					console.log($scope.selected)
 
 					var nb_valid = $filter('formValidity')($scope.myform);
 					$scope.translateAdvancementData = {
@@ -259,34 +255,37 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						var maxScrollTop = $(document).height() - $(window).height();
 						var fieldWrapperHeight = $('form_fields').height();
 
-						var selector = 'form > .field-directive:nth-of-type(' + String($scope.myform.visible_form_fields.length - 1) + ')'
+						var selector = 'form > .field-directive:nth-of-type(' + String($scope.myform.form_fields.length - 1) + ')'
 						var fieldDirectiveHeight = $(selector).height()
 						var scrollPosition = maxScrollTop - submitSectionHeight - fieldDirectiveHeight * 1.2;
 
-						var fractionToJump = 0.9;
-
+						var fractionToJump = 0.5;
 						//Focus on field above submit form button
-						if ($scope.selected.index === $scope.myform.visible_form_fields.length) {
+						if ($scope.selected.index === $scope.myform.form_fields.length) {
 							if (scrollTop < scrollPosition) {
 								field_index = $scope.selected.index - 1;
-								// $scope.setActiveField(null, field_index, false);
+								$scope.setActiveField(null, field_index, false);
 							}
 						}
 
 						//Focus on submit form button
-						else if ($scope.selected.index === $scope.myform.visible_form_fields.length - 1 && scrollTop > scrollPosition) {
+
+						else if ($scope.selected.index === $scope.myform.form_fields.length - 1 && scrollTop > scrollPosition) {
 							field_index = $scope.selected.index + 1;
-							$scope.setActiveField(FORM_ACTION_ID, field_index, false);
+							// $scope.setActiveField(FORM_ACTION_ID, field_index, false);
 						}
 
 						//If we scrolled bellow the current field, move to next field
-						else if (fieldBottom < elemHeight * fractionToJump && $scope.selected.index < $scope.myform.visible_form_fields.length - 1) {
+						else if (fieldBottom < (elemHeight+200) * fractionToJump && $scope.selected.index < $scope.myform.form_fields.length - 1) {
 							field_index = $scope.selected.index + 1;
+							console.log(field_index)
 							$scope.setActiveField(null, field_index, false);
 						}
 						//If we scrolled above the current field, move to prev field
-						else if ($scope.selected.index !== 0 && fieldTop > elemHeight * fractionToJump) {
+						else if ($scope.selected.index !== 0 && fieldTop > (elemHeight+200) * fractionToJump) {
+
 							field_index = $scope.selected.index - 1;
+							console.log(field_index)
 							$scope.setActiveField(null, field_index, false);
 						}
 					}
@@ -296,14 +295,11 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				$rootScope.nextField = $scope.nextField = function () {
 					if ($scope.selected && $scope.selected.index > -1) {
-						console.log($scope.selected)
 						if ($scope.selected._id !== FORM_ACTION_ID) {
 
 							var currField = $scope.myform.form_fields[$scope.selected.index];
 							let logicJumped = false;
-							console.log(currField.logicJump)
 							for (let index = 0; index < currField.logicJump.length; index++) {
-								console.log("hi")
 								const jump = currField.logicJump[index];
 								if (evaluateLogicJump(currField, jump)) {
 									$scope.setActiveField(jump.jumpTo, null, true, true);
@@ -360,8 +356,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 				$scope.exitStartPage = function () {
 					$scope.myform.startPage.showStart = false;
-					if ($scope.myform.visible_form_fields.length > 0) {
-						$scope.selected._id = $scope.myform.visible_form_fields[0]._id;
+					if ($scope.myform.form_fields.length > 0) {
+						$scope.selected._id = $scope.myform.form_fields[0]._id;
 					}
 				};
 
@@ -424,7 +420,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					form.geoLocation = geoData.geoLocation;
 
 					form.timeElapsed = _timeElapsed;
-					form.percentageComplete = $filter('formValidity')($scope.myform) / $scope.myform.visible_form_fields.length * 100;
+					form.percentageComplete = $filter('formValidity')($scope.myform) / $scope.myform.form_fields.length * 100;
 					delete form.endPage
 					delete form.isLive
 					delete form.provider
