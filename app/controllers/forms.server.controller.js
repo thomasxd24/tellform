@@ -78,12 +78,12 @@ exports.createSubmission = function(req, res) {
 		geoLocation: req.body.geoLocation,
 		device: req.body.device
 	});
-	if (req.body.webhook_url) {
-		Form.findById(req.body._id, 'webhook_url', { lean: true }, function(
+	if (req.body.webhooks) {
+		Form.findById(req.body._id, 'webhooks', { lean: true }, function(
 			err,
 			res
 		) {
-			let url = req.body.webhook_url;
+			let urls = req.body.webhooks;
 			var vari = {...req.body.variables};
 
 			fields.forEach(element => {
@@ -92,13 +92,15 @@ exports.createSubmission = function(req, res) {
 					[element.title]: element.fieldValue
 				};
 			});
+			urls.forEach(element => {
+				request.post(element.name).json({
+					form: req.body._id,
+					titre: req.body.title,
+					date: new Date(),
+					...vari
+				});
+			})
 
-			request.post(req.body.webhook_url).json({
-				form: req.body._id,
-				titre: req.body.title,
-				date: new Date(),
-				...vari
-			});
 		});
 	}
 
@@ -350,7 +352,7 @@ exports.formByIDFast = function(req, res, next, id) {
 	Form.findById(id)
 		.lean()
 		.select(
-			'title language form_fields startPage endPage hideFooter isLive design analytics.gaCode variables webhook_url'
+			'title language form_fields startPage endPage hideFooter isLive design analytics.gaCode variables webhook_url webhooks'
 		)
 		.exec(function(err, form) {
 			if (err) {

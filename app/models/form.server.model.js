@@ -81,7 +81,9 @@ var formSchemaOptions = {
 
 
 var webhookSchema = new Schema({
-	name:{String}
+	name:{
+		type:String
+	}
 })
 /**
  * Form Schema
