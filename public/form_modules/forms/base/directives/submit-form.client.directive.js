@@ -167,7 +167,16 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					if ($scope.selected === null || (!field_id && field_index === null)) {
 						return;
 					}
-					if(fromJump)
+					var exists = false;
+					for (var i = 0; i < $scope.myform.form_fields.length; i++) {
+						var currField = $scope.myform.form_fields[i];
+						if (currField['_id'] == field_id) {
+							exists = true;
+							break;
+						}
+					}
+
+					if(fromJump&&!exists)
 					{
 						for (var i = 0; i < $scope.myform.original_form_fields.length; i++) {
 							var currField = $scope.myform.original_form_fields[i];
@@ -296,8 +305,8 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 				$rootScope.nextField = $scope.nextField = function () {
 					if ($scope.selected && $scope.selected.index > -1) {
 						if ($scope.selected._id !== FORM_ACTION_ID) {
-							
-							
+
+
 
 							var currField = $scope.myform.form_fields[$scope.selected.index];
 							if(currField.logicJump.length!=0)
