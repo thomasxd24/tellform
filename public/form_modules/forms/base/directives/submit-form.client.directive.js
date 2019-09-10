@@ -268,7 +268,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						var fieldDirectiveHeight = $(selector).height()
 						var scrollPosition = maxScrollTop - submitSectionHeight - fieldDirectiveHeight * 1.2;
 
-						var fractionToJump = 0.5;
+						var fractionToJump = 0.7;
 						//Focus on field above submit form button
 						if ($scope.selected.index === $scope.myform.form_fields.length) {
 							if (scrollTop < scrollPosition) {
