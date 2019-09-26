@@ -6,16 +6,7 @@ angular.module('view-form')
 	return function(formObj){
 		if(formObj && formObj.form_fields ){
 
-			//get keys
-			var formKeys = Object.keys(formObj);
-
-			//we only care about things that don't start with $
-			var fieldKeys = formKeys.filter(function(key){
-				return key[0] !== '$';
-			});
-
 			var fields = formObj.form_fields;
-
 			var valid_count = fields.filter(function(field){
 				if(typeof field === 'object' && field.fieldType !== 'rating' && field.fieldType !== 'statement'){
 					return !!(field.fieldValue);
@@ -24,7 +15,8 @@ angular.module('view-form')
 				}
 
 			}).length;
-			return valid_count - (formObj.form_fields.length - formObj.form_fields.length);
+			
+			return valid_count;
 		}
 		return 0;
 	};

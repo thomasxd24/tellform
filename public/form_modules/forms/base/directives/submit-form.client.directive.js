@@ -66,7 +66,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 						field.fieldValue = '';
 						return field;
 					}).value();;
-					console.log($scope.myform.original_form_fields)
+					console.log($scope.myform.form_fields)
 
 					$scope.loading = false;
 					$scope.error = '';
@@ -209,6 +209,10 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 					$scope.selected._id = field_id;
 					$scope.selected.index = field_index;
 
+					form_fields_count = $scope.myform.form_fields.filter(function (field) {
+						return field.fieldType !== 'statement';
+					}).length;
+					
 					var nb_valid = $filter('formValidity')($scope.myform);
 					$scope.translateAdvancementData = {
 						done: nb_valid,

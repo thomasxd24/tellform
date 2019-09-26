@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 	FormSubmission = mongoose.model('FormSubmission'),
 	config = require('../../config/config'),
 	diff = require('deep-diff'),
-	request = require('request'),
+	fetch = require('node-fetch'),
 	_ = require('lodash');
 
 /**
@@ -63,6 +63,19 @@ exports.getPlate = async function (req,res) {
 /**
  * Submit a form entry
  */
+
+function sendData(urls,json) {
+	console.log(JSON.stringify(json))
+	urls.forEach(async element => {
+		await fetch(element.name, {
+        method: 'post',
+        body:    JSON.stringify(json),
+        headers: { 'Content-Type': 'application/json' },
+    	})
+    .then(res => res.json())
+	})
+}
+
 exports.createSubmission = function(req, res) {
 	var timeElapsed = 0;
 	var fields = JSON.parse(JSON.stringify(req.body.form_fields));
@@ -92,14 +105,13 @@ exports.createSubmission = function(req, res) {
 					[element.title]: element.fieldValue
 				};
 			});
-			urls.forEach(element => {
-				request.post(element.name).json({
-					form: req.body._id,
-					titre: req.body.title,
-					date: new Date(),
-					...vari
-				});
-			})
+			sendData(urls,{
+				form: req.body._id,
+				titre: req.body.title,
+				date: new Date(),
+				...vari
+			});
+			
 
 		});
 	}
