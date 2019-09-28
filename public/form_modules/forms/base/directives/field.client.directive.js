@@ -75,12 +75,21 @@ angular.module('view-form').directive('fieldDirective', [
 				};
 				scope.nextField = $rootScope.nextField;
 				scope.setActiveField = $rootScope.setActiveField;
+				scope.transform = $rootScope.transform;
 
 				async function processFile(event) {
 					var content = event.target.result;
 					var image = await resizedataURL(content, 500, 600);
-					sendFileToCloudVision(image.replace('data:image/jpeg;base64,', ''));
+					sendFileToCloudVision(image.replace('data:image/jpeg;base64,', ''),"plate");
 				}
+
+				async function processFileSerial(event) {
+					var content = event.target.result;
+					var image = await resizedataURL(content, 500, 600);
+					sendFileToCloudVision(image.replace('data:image/jpeg;base64,', ''),"serial");
+				}
+
+				
 
 				function resizedataURL(datas) {
 					return new Promise(async function(resolve, reject) {
@@ -111,7 +120,7 @@ angular.module('view-form').directive('fieldDirective', [
 					});
 				} // Use it like : var newDataURI = await resizedataURL('yourDataURIHere', 50, 50);
 
-				async function sendFileToCloudVision(content) {
+				async function sendFileToCloudVision(content,type) {
 					var type = 'DOCUMENT_TEXT_DETECTION';
 
 					// Strip out the file prefix when you convert to json.
@@ -148,10 +157,12 @@ angular.module('view-form').directive('fieldDirective', [
 							let text = d.responses[0].fullTextAnnotation.text;
 							text = text.replace(/\s/g, '');
 							var currField = scope.field;
-
+							if(type == "plate")
 							currField.fieldValue = text.match(
 								/([A-Z]|[0-9]){2}-([A-Z]|[0-9]){3}-([A-Z]|[0-9]){2}/
 							)[0];
+							else
+							currField.fieldValue = text.substring(text.length - 8, text.length);
 							window.t2 = performance.now();
 					console.log("Uploading Image and getting a response took"+ (window.t2 - window.t1) + " milliseconds.")
 						})
@@ -189,6 +200,18 @@ angular.module('view-form').directive('fieldDirective', [
 					reader.onloadend = processFile;
 					reader.readAsDataURL(file);
 				};
+
+				scope.uploadFileForSerial = function(item) {
+					window.t0 = performance.now();
+					var file = item.files[0];
+					console.log(file);
+					scope.loadingText = 'Chargement...';
+					var reader = new FileReader();
+
+					reader.onloadend = processFileSerial;
+					reader.readAsDataURL(file);
+				};
+
 
 				//Set format only if field is a date
 				if (scope.field.fieldType === 'date') {

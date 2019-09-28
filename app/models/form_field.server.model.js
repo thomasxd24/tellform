@@ -102,6 +102,10 @@ function BaseFieldSchema(){
 			default: false
 		},
 
+		variable : {
+			type: String,
+		},
+
 		deletePreserved: {
 			type: Boolean,
 			default: false
