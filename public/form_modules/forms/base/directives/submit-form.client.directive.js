@@ -164,21 +164,23 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 				};
 
 				$scope.transform = $rootScope.transform = function (title) {
-					var variabes = title.match(/(?<={\s*).*?(?=\s*})/gs);
+					var variabes = title.match(/\{(.*?)\}/g)
 					if(variabes == null) return title;
+					variabes = variabes.map(ele=>ele.replace(/{/g,'').replace(/}/g,''));
 					variabes.forEach(element =>
 						{
+							var isChanged = false;
 							$scope.myform.form_fields.forEach(fieldalt=>
 								{
 									if(fieldalt.variable == element)
 									{
 										title = title.replace(`{${element}}`, fieldalt.fieldValue);
-									}
-									else
-									{
-										title = title.replace(`{${element}}`, "________");
+										isChanged = true
+										return;
 									}
 								})
+								if(!isChanged) title = title.replace(`{${element}}`, "________");
+								
 						})
 					return title
 				}
