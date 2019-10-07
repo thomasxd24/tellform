@@ -157,12 +157,9 @@ angular.module('view-form').directive('fieldDirective', [
 							let text = d.responses[0].fullTextAnnotation.text;
 							text = text.replace(/\s/g, '');
 							var currField = scope.field;
-							if(type == "plate")
 							currField.fieldValue = text.match(
 								/([A-Z]|[0-9]){2}-([A-Z]|[0-9]){3}-([A-Z]|[0-9]){2}/
 							)[0];
-							else
-							currField.fieldValue = text.substring(text.length - 8, text.length);
 							window.t2 = performance.now();
 					console.log("Uploading Image and getting a response took"+ (window.t2 - window.t1) + " milliseconds.")
 						})

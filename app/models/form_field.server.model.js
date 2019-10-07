@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
 	_ = require('lodash'),
 	Schema = mongoose.Schema,
 	LogicJumpSchema = require('./logic_jump.server.model'),
+	ScoreSchema = require('./score.server.model'),
 	tokgen = require('../libs/tokenGenerator');
 
 var FieldOptionSchema = new Schema({
@@ -114,6 +115,7 @@ function BaseFieldSchema(){
 			type: Boolean,
 			default: false
 		},
+		score: [ScoreSchema],
 
 		validFieldTypes: {
 			type: [String]
