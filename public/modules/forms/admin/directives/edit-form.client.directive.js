@@ -143,6 +143,16 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 
 							};
 
+							$scope.addCondScore = function () {
+								if(!$scope.field.score)  $scope.field.score = [];
+								$scope.field.score.push(
+									{
+										value: null,
+										score:null
+									});
+
+							};
+
 							$scope.saveField = function () {
 								if ($scope.isEdit) {
 									$scope.myform.form_fields[field_index] = $scope.field;
@@ -152,6 +162,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 
 								$scope.$parent.update(false, $scope.$parent.myform, true, true, function () {
 									$uibModalInstance.close();
+									alert("Saved")
 								});
 
 							};
@@ -161,6 +172,12 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 
 
 							};
+
+							$scope.deleteScore = function (jumpIndex,field) {
+								field.score.splice(jumpIndex,1)
+
+
+						};
 							$scope.cancel = function () {
 								$uibModalInstance.close();
 							};

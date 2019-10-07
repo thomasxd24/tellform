@@ -108,6 +108,7 @@ exports.createSubmission = function(req, res) {
 			sendData(urls,{
 				form: req.body._id,
 				titre: req.body.title,
+				score:req.body.scoreTotal,
 				date: new Date(),
 				...vari
 			});

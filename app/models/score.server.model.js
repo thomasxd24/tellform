@@ -17,7 +17,7 @@ var schemaOptions = {
 };
 
 var ScoreSchema = new Schema({
-	valueB: {
+	value: {
 		type: Schema.Types.String
 	},
 	score: {

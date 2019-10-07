@@ -116,6 +116,7 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
         $scope.updateDesign = function(updateImmediately, data, shouldDiff, refreshAfterUpdate){
             $scope.update(updateImmediately, data, shouldDiff, refreshAfterUpdate, function(){
                 refreshFrame();
+                
             });
 		}
 		$scope.webhooks = []
@@ -198,14 +199,16 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                     delete dataToSend.created;
                     delete dataToSend.lastModified;
                     delete dataToSend.__v;
-
+                    alert("hi")
                     $scope.updatePromise = $http.put('/forms/' + $scope.myform._id, {form: dataToSend})
                         .then(function (response) {
+                            alert("Saved")
                             if (refreshAfterUpdate) {
                                 $rootScope.myform = $scope.myform = response.data;
                             }
 
                         }).catch(function (response) {
+                            alert("Erreur")
                             err = response.data;
                             console.error(err);
                         }).finally(function () {

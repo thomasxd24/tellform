@@ -490,24 +490,27 @@
 					<div class="row">
 						<div class="col-md-4 col-xs-12 field-input">{{ 'LOGIC_JUMP' | translate }}</div>
 						<div class="col-md-8 col-xs-12 field-input">
-							<button ng-click="addJump()" class="btn">
+							<button ng-click="addCondScore()" class="btn">
 							Ajouter
 						</button>
 						</div>
 					</div>
-					<div class="row question" ng-repeat="jump in field.logicJump">
+					<div class="row question" ng-repeat="score in field.score">
 						<div class="col-md-2 col-sm-12">
 
-							<b> Si ce champ = </b>
+							<b> Si  = </b>
 						</div>
-						<div class="col-md-3 col-sm-12">
-							<input type="text" ng-model="jump.valueB"/>
+						<div class="col-md-4 col-sm-12">
+							<input type="text" ng-model="score.value" style="width:100%"/>
 						</div>
 						<div class="col-md-2 col-sm-12">
-							<b> Alors ajouter</b>
+							<b> Alors +</b>
 						</div>
-						<div class="col-md-3 col-sm-12">
-							<input type="text" ng-model="jump.valueB"/>
+						<div class="col-md-2 col-sm-12">
+							<input type="number" ng-model="score.score" style="width:100%"/>
+						</div>
+						<div class="col-md-1 col-sm-12">
+							<button ng-click="deleteScore($index,field)">Enlever</button>
 						</div>
 						
 					</div>

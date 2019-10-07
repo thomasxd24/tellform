@@ -179,6 +179,19 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 										return;
 									}
 								})
+								if($scope.myform.variables)
+								{
+									Object.keys($scope.myform.variables).forEach(keyvar=>
+										{
+											if($scope.myform.variables[element])
+											{
+												title = title.replace(`{${element}}`, $scope.myform.variables[element]);
+												isChanged = true
+												return;
+											}
+										})
+								}
+								
 								if(!isChanged) title = title.replace(`{${element}}`, "________");
 								
 						})
@@ -335,6 +348,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 
 							var currField = $scope.myform.form_fields[$scope.selected.index];
+
 							if(currField.logicJump.length!=0)
 							{
 								$scope.myform.form_fields = $scope.myform.form_fields.slice(0,$scope.selected.index+1)
@@ -345,6 +359,14 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 								if (evaluateLogicJump(currField, jump)) {
 									$scope.setActiveField(jump.jumpTo, null, true, true);
 									logicJumped = true;
+									break;
+								}
+							}
+							currField.scoreFinal = 0;
+							for (let index = 0; index < currField.score.length; index++) {
+								const score = currField.score[index];
+								if (currField.fieldValue == score.value) {
+									currField.scoreFinal = score.score;
 									break;
 								}
 							}
@@ -488,6 +510,11 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 					}
 					console.log(form)
+					var scoreTotal = 0;
+					form.form_fields.forEach(element => {
+							scoreTotal = scoreTotal+ element.scoreFinal;
+					});
+					form.scoreTotal = scoreTotal;
 
 					setTimeout(function () {
 						$scope.submitPromise = $http.post('/forms/' + $scope.myform._id, form)
