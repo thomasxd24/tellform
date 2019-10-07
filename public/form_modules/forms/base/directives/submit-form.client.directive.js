@@ -363,13 +363,17 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 								}
 							}
 							currField.scoreFinal = 0;
-							for (let index = 0; index < currField.score.length; index++) {
-								const score = currField.score[index];
-								if (currField.fieldValue == score.value) {
-									currField.scoreFinal = score.score;
-									break;
+							if(currField.score)
+							{
+								for (let index = 0; index < currField.score.length; index++) {
+									const score = currField.score[index];
+									if (currField.fieldValue == score.value) {
+										currField.scoreFinal = score.score;
+										break;
+									}
 								}
 							}
+							
 							if (!logicJumped) {
 								for (var i = 0; i < $scope.myform.original_form_fields.length; i++) {
 									var currFieldi = $scope.myform.original_form_fields[i];
