@@ -13,7 +13,7 @@
 		</p>
 	</div>
 	<div class="col-xs-12 field-input">
-		<div ng-if="field.simple">
+		<div ng-if="!field.simple">
 			<select ng-model="field.fieldValue" ng-focus="setActiveField(field._id, null, false)"
 				ng-required="field.required" on-tab-and-shift-key="prevField()" on-tab-key="nextField()"
 				ng-change="nextField()">
@@ -21,7 +21,7 @@
 					value="{{option.option_value}}">{{option.option_value}}</option>
 			</select>
 		</div>
-		<div ng-if="!field.simple">
+		<div ng-if="field.simple">
 			<ui-select theme="selectize" search-enabled="true" search-by="option_value" set-search-to-answer="true" ng-model="field.fieldValue">
 				<ui-select-match placeholder="{{ 'OPTION_PLACEHOLDER' | translate }}">
 				</ui-select-match>
