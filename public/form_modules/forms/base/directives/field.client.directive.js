@@ -217,7 +217,8 @@ angular.module('view-form').directive('fieldDirective', [
 						changeMonth: true,
 						altFormat: 'dd/mm/yyyy',
 						yearRange: '1900:-0',
-						defaultDate: 0
+						defaultDate: 0,
+						
 					};
 				}
 
