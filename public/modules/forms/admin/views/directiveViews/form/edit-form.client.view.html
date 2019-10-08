@@ -374,6 +374,19 @@
 							</label>
 						</div>
 					</div>
+					<div class="row" ng-if="field.fieldType == 'dropdown'">
+							<div class="col-md-4 col-xs-12 field-title">Simple Dropdown</div>
+							<div class="col-md-8 col-xs-12 field-input">
+								<label class="switch-light switch-holo" onclick="">
+									<input type="checkbox" ng-model="field.simple">
+									<span class="large-3 columns float-left">
+										<span> {{ 'OFF' | translate }}</span>
+										<span> {{ 'ON' | translate }}</span>
+										<a></a>
+									</span>
+								</label>
+							</div>
+						</div>
 					<div class="row">
 						<div class="col-md-4 col-xs-12 field-input">Variables:</div>
 						<div class="col-md-8 col-xs-12 field-input">

@@ -164,6 +164,7 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 				};
 
 				$scope.transform = $rootScope.transform = function (title) {
+					if(!title) return;
 					var variabes = title.match(/\{(.*?)\}/g)
 					if(variabes == null) return title;
 					variabes = variabes.map(ele=>ele.replace(/{/g,'').replace(/}/g,''));
