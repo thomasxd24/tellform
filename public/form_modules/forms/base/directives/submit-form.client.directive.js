@@ -349,7 +349,10 @@ angular.module('view-form').directive('submitFormDirective', ['$http', 'TimeCoun
 
 
 							var currField = $scope.myform.form_fields[$scope.selected.index];
-
+							if(currField.fieldType == "plate")
+							{
+								currField.fieldValue = currField.fieldValue.replace(/.$/,currField.fieldValue[currField.fieldValue.length -1].toLowerCase())
+							}
 							if(currField.logicJump.length!=0)
 							{
 								$scope.myform.form_fields = $scope.myform.form_fields.slice(0,$scope.selected.index+1)
