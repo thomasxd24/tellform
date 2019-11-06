@@ -11,7 +11,6 @@ var mongoose = require('mongoose'),
 	Form = mongoose.model('Form'),
 	FormSubmission = mongoose.model('FormSubmission'),
 	config = require('../../config/config'),
-	diff = require('deep-diff'),
 	fetch = require('node-fetch'),
 	_ = require('lodash');
 
@@ -234,13 +233,7 @@ exports.update = function(req, res) {
 		};
 	}
 
-	if (req.body.changes) {
-		var formChanges = req.body.changes;
-
-		formChanges.forEach(function(change) {
-			diff.applyChange(form._doc, true, change);
-		});
-	} else {
+	if (req.body.form) {
 		delete updatedForm.__v;
 		delete updatedForm.created;
 		//Unless we have 'admin' privileges, updating the form's admin is disabled

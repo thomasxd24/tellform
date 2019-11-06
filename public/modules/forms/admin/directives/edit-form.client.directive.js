@@ -162,7 +162,7 @@ angular.module('forms').directive('editFormDirective', ['$rootScope', 'FormField
 
 								$scope.$parent.update(false, $scope.$parent.myform, true, true, function () {
 									$uibModalInstance.close();
-									alert("Saved")
+									Snackbar.show({text: 'Saved'});
 								});
 
 							};

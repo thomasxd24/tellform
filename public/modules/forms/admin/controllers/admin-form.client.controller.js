@@ -155,10 +155,11 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                         }
                     }
 
-                    var data = DeepDiff.diff($scope.oldForm, $scope.myform);
+                    //var data = DeepDiff.diff($scope.oldForm, $scope.myform); fuck deep diff
 
-                    $scope.updatePromise = $http.put('/forms/' + $scope.myform._id, {changes: data})
+                    $scope.updatePromise = $http.put('/forms/' + $scope.myform._id, {form: $scope.myform})
                         .then(function (response) {
+                            Snackbar.show({text: 'Saved'});
                             if (refreshAfterUpdate) {
                                 $rootScope.myform = $scope.myform = response.data;
                                 $scope.oldForm = _.cloneDeep($scope.myform);
@@ -199,16 +200,15 @@ angular.module('forms').controller('AdminFormController', ['$rootScope', '$windo
                     delete dataToSend.created;
                     delete dataToSend.lastModified;
                     delete dataToSend.__v;
-                    alert("hi")
                     $scope.updatePromise = $http.put('/forms/' + $scope.myform._id, {form: dataToSend})
                         .then(function (response) {
-                            alert("Saved")
+                            Snackbar.show({text: 'Saved'});
                             if (refreshAfterUpdate) {
                                 $rootScope.myform = $scope.myform = response.data;
                             }
 
                         }).catch(function (response) {
-                            alert("Erreur")
+                            Snackbar.show({text: 'Erreur'});
                             err = response.data;
                             console.error(err);
                         }).finally(function () {
